@@ -189,9 +189,15 @@ function setupNavTabs() {
       if (target === 'monitoring' || target === 'overview') {
         if (monitoringView) monitoringView.classList.add('active');
         if (analyticsView) analyticsView.classList.remove('active');
+        if (smartHomeInstance && typeof smartHomeInstance.onResize === 'function') {
+          setTimeout(() => smartHomeInstance.onResize(), 60);
+        }
       } else if (target === 'analytics') {
         if (monitoringView) monitoringView.classList.remove('active');
         if (analyticsView) analyticsView.classList.add('active');
+        if (window.resizeInteractiveGraph) {
+          setTimeout(() => window.resizeInteractiveGraph(), 60);
+        }
         if (currentEntries.length > 0) {
           renderTrendChart('trendChart', currentEntries);
         }
@@ -359,19 +365,31 @@ function loadInteractiveConnectionsGraph() {
     }
   };
 
-  // Node definitions with positions
-  const w = canvas.parentElement.clientWidth || 400;
-  const h = canvas.parentElement.clientHeight || 290;
+  // Node definitions with normalized percentage coordinates for perfect responsive layout
+  let w = canvas.parentElement.clientWidth || 600;
+  let h = canvas.parentElement.clientHeight || 320;
   canvas.width = w;
   canvas.height = h;
 
   const nodes = [
-    { id: 'water', label: 'Water Use', color: '#2dd4bf', x: w * 0.72, y: h * 0.55, radius: 26 },
-    { id: 'pump', label: 'Well / Pump', color: '#38bdf8', x: w * 0.56, y: h * 0.80, radius: 24 },
-    { id: 'electricity', label: 'Electricity', color: '#fbbf24', x: w * 0.28, y: h * 0.72, radius: 28 },
-    { id: 'cost', label: 'Utility Cost', color: '#34d399', x: w * 0.28, y: h * 0.38, radius: 25 },
-    { id: 'food', label: 'Kitchen & Food', color: '#fb923c', x: w * 0.55, y: h * 0.24, radius: 24 }
+    { id: 'water', label: 'Water Use', color: '#2dd4bf', nx: 0.72, ny: 0.55, radius: 26 },
+    { id: 'pump', label: 'Well / Pump', color: '#38bdf8', nx: 0.56, ny: 0.80, radius: 24 },
+    { id: 'electricity', label: 'Electricity', color: '#fbbf24', nx: 0.28, ny: 0.72, radius: 28 },
+    { id: 'cost', label: 'Utility Cost', color: '#34d399', nx: 0.28, ny: 0.35, radius: 25 },
+    { id: 'food', label: 'Kitchen & Food', color: '#fb923c', nx: 0.55, ny: 0.22, radius: 24 }
   ];
+
+  function recomputePositions() {
+    w = canvas.parentElement.clientWidth || 600;
+    h = canvas.parentElement.clientHeight || 320;
+    canvas.width = w;
+    canvas.height = h;
+    nodes.forEach(n => {
+      n.x = n.nx * w;
+      n.y = n.ny * h;
+    });
+  }
+  recomputePositions();
 
   const edges = [
     { from: 'water', to: 'pump', label: 'Direct Link (100%)', isCausal: true },
@@ -489,6 +507,8 @@ function loadInteractiveConnectionsGraph() {
     const rect = canvas.getBoundingClientRect();
     draggedNode.x = Math.max(30, Math.min(canvas.width - 30, e.clientX - rect.left));
     draggedNode.y = Math.max(30, Math.min(canvas.height - 30, e.clientY - rect.top));
+    draggedNode.nx = draggedNode.x / canvas.width;
+    draggedNode.ny = draggedNode.y / canvas.height;
   });
 
   window.addEventListener('mouseup', () => {
@@ -514,17 +534,20 @@ function loadInteractiveConnectionsGraph() {
     const rect = canvas.getBoundingClientRect();
     draggedNode.x = Math.max(30, Math.min(canvas.width - 30, e.touches[0].clientX - rect.left));
     draggedNode.y = Math.max(30, Math.min(canvas.height - 30, e.touches[0].clientY - rect.top));
+    draggedNode.nx = draggedNode.x / canvas.width;
+    draggedNode.ny = draggedNode.y / canvas.height;
   });
 
   canvas.addEventListener('touchend', () => {
     draggedNode = null;
   });
 
-  // Resize handler
-  window.addEventListener('resize', () => {
-    canvas.width = canvas.parentElement.clientWidth || 400;
-    canvas.height = canvas.parentElement.clientHeight || 290;
-  });
+  // Responsive Resize Handler
+  function handleGraphResize() {
+    recomputePositions();
+  }
+  window.addEventListener('resize', handleGraphResize);
+  window.resizeInteractiveGraph = handleGraphResize;
 
   updateStory(nodes[0]);
   draw();
