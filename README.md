@@ -152,10 +152,11 @@ Simply double-click `run.bat` in the project folder.
 
 **Method 4 — Direct Uvicorn:**
 ```powershell
-python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Navigate to **[http://localhost:8000](http://localhost:8000)** in your browser!
+Navigate to **[http://localhost:8000](http://localhost:8000)** or **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser!
+*(Note: Do not type `http://0.0.0.0:8000` into your web browser, as browsers cannot navigate to 0.0.0.0).*
 
 Default Seed Account:
 - **Email**: `demo@homeresource.local`

@@ -15,9 +15,11 @@ console.log('============================================================\n');
 const pyEnv = { ...process.env, DISABLE_SQLALCHEMY_CEXT: '1' };
 const pyCmd = process.platform === 'win32' ? 'python' : 'python3';
 
-console.log(`[Launcher] Starting Python FastAPI server on http://localhost:${PORT} ...`);
+console.log(`[Launcher] Starting Python FastAPI server on http://localhost:${PORT} ...\n`);
+console.log(`  👉 Localhost: http://localhost:${PORT}`);
+console.log(`  👉 Network:   http://127.0.0.1:${PORT}\n`);
 
-const pyProcess = spawn(pyCmd, ['-m', 'uvicorn', 'backend.app.main:app', '--host', '0.0.0.0', '--port', String(PORT), '--reload'], {
+const pyProcess = spawn(pyCmd, ['-m', 'uvicorn', 'backend.app.main:app', '--host', '127.0.0.1', '--port', String(PORT), '--reload'], {
   cwd: __dirname,
   env: pyEnv,
   stdio: 'inherit'

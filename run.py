@@ -16,8 +16,11 @@ if __name__ == "__main__":
     print("=" * 60)
     print("  HomeResource — Household Resource Intelligence Platform")
     print("=" * 60)
-    print("\nStarting application server at http://localhost:8000 ...")
-    print("Press CTRL+C to stop.\n")
+    print("\nApplication server ready at:")
+    print("  👉 http://localhost:8000")
+    print("  👉 http://127.0.0.1:8000")
+    print("  (Note: Browsers cannot open 0.0.0.0 - use localhost or 127.0.0.1)")
+    print("\nPress CTRL+C to stop.\n")
 
     import uvicorn
-    uvicorn.run("backend.app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.app.main:app", host="127.0.0.1", port=8000, reload=True)

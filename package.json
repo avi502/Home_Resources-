@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "py:start": "python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload",
+    "py:start": "python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload",
     "test": "pytest -v tests/"
   },
   "keywords": [
