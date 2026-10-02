@@ -1,4 +1,11 @@
 import os
+import sys
+
+# Ensure project root is in sys.path for Vercel / serverless execution
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware

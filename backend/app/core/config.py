@@ -29,13 +29,15 @@ class Settings(BaseSettings):
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
+        if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV"):
+            return ["*"]
         if isinstance(v, str):
             if v.startswith("[") and v.endswith("]"):
                 return json.loads(v)
             return [i.strip() for i in v.split(",") if i.strip()]
         elif isinstance(v, list):
             return v
-        return []
+        return ["*"]
 
     # Features
     DEMO_MODE: bool = True
@@ -51,6 +53,8 @@ class Settings(BaseSettings):
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def sanitize_database_url(cls, v: str) -> str:
+        if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+            return "sqlite:////tmp/homeresource.db"
         if not v or not isinstance(v, str) or v.startswith("file:"):
             return "sqlite:///./homeresource.db"
         return v
