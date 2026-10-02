@@ -7,23 +7,43 @@
   <meta name="description" content="HomeResource helps you understand and reduce waste across electricity, water, food, money and time — by finding hidden connections, spotting anomalies and showing you what to do next.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
 
   <!-- Google Fonts: Inter & Caveat for handwritten callout -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 
-  <!-- Core Styles -->
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/pages/landing.css">
+  <!-- Critical Base Inline Styles to guarantee dark theme even before CSS downloads -->
+  <style>
+    :root {
+      --home-dark: #081418;
+      --home-surface: #0d2229;
+      --home-emerald: #2dd4bf;
+    }
+    html, body {
+      background-color: #081418 !important;
+      color: #f8fafc !important;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Guarantee SVG conduit paths are NEVER filled with black */
+    .stream-line, path.stream-line {
+      fill: none !important;
+    }
+  </style>
+
+  <!-- Core Styles (Relative Paths for GitHub Pages and Local Hosting) -->
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/pages/landing.css">
 </head>
 <body class="landing-page-body">
 
   <!-- Top Sticky Navigation Bar -->
   <header class="landing-navbar">
     <div class="landing-nav-inner">
-      <a href="/" class="brand-link">
+      <a href="./index.html" class="brand-link">
         <div class="brand-icon-leaf">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
@@ -35,11 +55,11 @@
 
       <nav>
         <ul class="landing-nav-links">
-          <li><a href="/" class="landing-nav-item active">Home</a></li>
-          <li><a href="/dashboard.html" class="landing-nav-item">Dashboard</a></li>
-          <li><a href="/dashboard.html#insights" class="landing-nav-item">Insights</a></li>
-          <li><a href="/simulator.html" class="landing-nav-item">Simulator</a></li>
-          <li><a href="/dashboard.html#history" class="landing-nav-item">About</a></li>
+          <li><a href="./index.html" class="landing-nav-item active">Home</a></li>
+          <li><a href="./dashboard.html" class="landing-nav-item">Dashboard</a></li>
+          <li><a href="./dashboard.html#insights" class="landing-nav-item">Insights</a></li>
+          <li><a href="./simulator.html" class="landing-nav-item">Simulator</a></li>
+          <li><a href="./dashboard.html#history" class="landing-nav-item">About</a></li>
         </ul>
       </nav>
 
@@ -327,33 +347,33 @@
             </g>
 
             <!-- 4. The 5 Connected Energy Conduits (Curved Animated Living Streams) -->
-            <g class="conduit-streams" pointer-events="none">
+            <g class="conduit-streams" pointer-events="none" fill="none">
               <!-- Electricity Stream (⚡ Gold) -->
-              <path class="stream-line stream-elec" d="M 620 95 C 530 95, 480 120, 435 145" />
+              <path fill="none" class="stream-line stream-elec" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" d="M 620 95 C 530 95, 480 120, 435 145" />
               <circle r="4.5" fill="#fbbf24" filter="url(#glow-elec)">
                 <animateMotion dur="2.2s" repeatCount="indefinite" path="M 620 95 C 530 95, 480 120, 435 145" />
               </circle>
 
               <!-- Water Stream (💧 Azure Cyan) -->
-              <path class="stream-line stream-water" d="M 630 450 C 610 430, 600 395, 602 384" />
+              <path fill="none" class="stream-line stream-water" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" d="M 630 450 C 610 430, 600 395, 602 384" />
               <circle r="4.5" fill="#38bdf8" filter="url(#glow-water)">
                 <animateMotion dur="2.4s" repeatCount="indefinite" path="M 630 450 C 610 430, 600 395, 602 384" />
               </circle>
 
               <!-- Food Stream (🍽️ Emerald Green) -->
-              <path class="stream-line stream-food" d="M 200 455 C 250 455, 290 420, 330 380" />
+              <path fill="none" class="stream-line stream-food" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" d="M 200 455 C 250 455, 290 420, 330 380" />
               <circle r="4.5" fill="#34d399" filter="url(#glow-food)">
                 <animateMotion dur="2.8s" repeatCount="indefinite" path="M 200 455 C 250 455, 290 420, 330 380" />
               </circle>
 
               <!-- Money / Cost Savings Stream (🪙 Teal Mint) -->
-              <path class="stream-line stream-money" d="M 220 90 C 290 90, 350 170, 410 260" />
+              <path fill="none" class="stream-line stream-money" stroke="#2dd4bf" stroke-width="2.2" stroke-linecap="round" d="M 220 90 C 290 90, 350 170, 410 260" />
               <circle r="4.5" fill="#2dd4bf" filter="url(#glow-money)">
                 <animateMotion dur="2.5s" repeatCount="indefinite" path="M 220 90 C 290 90, 350 170, 410 260" />
               </circle>
 
               <!-- Time Saved Stream (⏱️ Chrono Violet) -->
-              <path class="stream-line stream-time" d="M 180 270 C 240 270, 290 280, 340 290" />
+              <path fill="none" class="stream-line stream-time" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" d="M 180 270 C 240 270, 290 280, 340 290" />
               <circle r="4.5" fill="#a78bfa" filter="url(#glow-violet)">
                 <animateMotion dur="3.0s" repeatCount="indefinite" path="M 180 270 C 240 270, 290 280, 340 290" />
               </circle>
@@ -535,7 +555,7 @@
           </div>
         </div>
 
-        <a href="/dashboard.html" class="insight-btn">View Details &rarr;</a>
+        <a href="./dashboard.html" class="insight-btn">View Details &rarr;</a>
       </div>
 
       <!-- Card 3: Quick Actions -->
@@ -545,7 +565,7 @@
           <span>Quick Actions</span>
         </div>
 
-        <a href="/simulator.html" class="qa-link-btn">
+        <a href="./simulator.html" class="qa-link-btn">
           <div class="qa-left-info">
             <span>⚛</span>
             <span>Run What-If Simulation</span>
@@ -553,7 +573,7 @@
           <span>&rarr;</span>
         </a>
 
-        <a href="/dashboard.html" class="qa-link-btn">
+        <a href="./dashboard.html" class="qa-link-btn">
           <div class="qa-left-info">
             <span>📈</span>
             <span>View Resource Graph</span>
@@ -561,7 +581,7 @@
           <span>&rarr;</span>
         </a>
 
-        <a href="/dashboard.html" class="qa-link-btn">
+        <a href="./dashboard.html" class="qa-link-btn">
           <div class="qa-left-info">
             <span>📑</span>
             <span>Explore Historical Data</span>
@@ -678,6 +698,6 @@
   </div>
 
   <!-- Script Modules -->
-  <script type="module" src="/js/pages/landing.js"></script>
+  <script type="module" src="./js/pages/landing.js"></script>
 </body>
 </html>

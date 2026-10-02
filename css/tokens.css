@@ -1,0 +1,79 @@
+/* HomeResource Design Tokens
+   Blueprint Section 5.D:
+   - Deep forest: #0B1412
+   - Emerald: #173D32
+   - Warm amber: #D9A85B
+   - Warm ivory: #F3F0E7
+   Typography: Space Grotesk & Inter
+*/
+
+:root {
+  /* Color Palette */
+  --color-bg-primary: #0B1412;
+  --color-bg-secondary: #0F1E1B;
+  --color-bg-tertiary: #132722;
+  --color-surface: rgba(19, 39, 34, 0.7);
+  --color-surface-hover: rgba(23, 61, 50, 0.85);
+  --color-surface-card: rgba(15, 30, 27, 0.75);
+
+  --color-emerald-deep: #0D221C;
+  --color-emerald: #173D32;
+  --color-emerald-light: #235A4B;
+  --color-emerald-bright: #2DD4BF;
+
+  --color-amber: #D9A85B;
+  --color-amber-hover: #E5B86F;
+  --color-amber-glow: rgba(217, 168, 91, 0.35);
+
+  --color-text-primary: #F3F0E7;
+  --color-text-secondary: #A3B5AE;
+  --color-text-muted: #6B7D76;
+
+  --color-border: rgba(217, 168, 91, 0.15);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-active: rgba(217, 168, 91, 0.5);
+
+  /* Semantic Resource Colors */
+  --res-electricity: #FBBF24;
+  --res-water: #2DD4BF;
+  --res-food: #FB923C;
+  --res-money: #34D399;
+  --res-time: #38BDF8;
+
+  --status-anomaly-severe: #EF4444;
+  --status-anomaly-moderate: #F59E0B;
+  --status-normal: #10B981;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 5rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows & Glassmorphism */
+  --glass-backdrop: blur(16px);
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 25px var(--color-amber-glow);
+  --shadow-emerald-glow: 0 0 30px rgba(45, 212, 191, 0.2);
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-cinematic: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}

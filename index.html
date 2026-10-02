@@ -4,21 +4,700 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HomeResource — Turn Your Household Data Into Real Savings</title>
-  <meta http-equiv="refresh" content="0; url=frontend/index.html">
-  <script>
-    // Seamless instant redirect for GitHub Pages and static hosts
-    var basePath = window.location.pathname;
-    if (!basePath.endsWith('/')) {
-      basePath += '/';
+  <meta name="description" content="HomeResource helps you understand and reduce waste across electricity, water, food, money and time — by finding hidden connections, spotting anomalies and showing you what to do next.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+
+  <!-- Google Fonts: Inter & Caveat for handwritten callout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Critical Base Inline Styles to guarantee dark theme even before CSS downloads -->
+  <style>
+    :root {
+      --home-dark: #081418;
+      --home-surface: #0d2229;
+      --home-emerald: #2dd4bf;
     }
-    window.location.replace(basePath + 'frontend/index.html' + window.location.search + window.location.hash);
-  </script>
+    html, body {
+      background-color: #081418 !important;
+      color: #f8fafc !important;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Guarantee SVG conduit paths are NEVER filled with black */
+    .stream-line, path.stream-line {
+      fill: none !important;
+    }
+  </style>
+
+  <!-- Core Styles (Relative Paths for GitHub Pages and Local Hosting) -->
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/pages/landing.css">
 </head>
-<body style="background: #081418; color: #2dd4bf; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
-  <div style="text-align: center;">
-    <h2 style="margin-bottom: 0.5rem; color: #ffffff;">HomeResource</h2>
-    <p style="color: #94a3b8;">Loading application...</p>
-    <a href="frontend/index.html" style="color: #2dd4bf; text-decoration: underline; font-size: 0.9rem;">Click here if you are not redirected automatically</a>
+<body class="landing-page-body">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="landing-navbar">
+    <div class="landing-nav-inner">
+      <a href="./index.html" class="brand-link">
+        <div class="brand-icon-leaf">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+            <path d="M11 13v7"/>
+          </svg>
+        </div>
+        <span>HomeResource</span>
+      </a>
+
+      <nav>
+        <ul class="landing-nav-links">
+          <li><a href="./index.html" class="landing-nav-item active">Home</a></li>
+          <li><a href="./dashboard.html" class="landing-nav-item">Dashboard</a></li>
+          <li><a href="./dashboard.html#insights" class="landing-nav-item">Insights</a></li>
+          <li><a href="./simulator.html" class="landing-nav-item">Simulator</a></li>
+          <li><a href="./dashboard.html#history" class="landing-nav-item">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="landing-nav-actions">
+        <button class="theme-btn" id="theme-toggle-btn" title="Toggle Lighting Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="btn-pill-login" id="nav-login-btn">Login</button>
+        <button class="btn-pill-primary" id="nav-signup-btn">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero Section (Exact Match to Reference Layout) -->
+  <main class="landing-hero-section">
+    <div class="hero-showcase-grid">
+      
+      <!-- Left Column: Copy & Calls to Action -->
+      <div class="hero-text-column">
+        <span class="hero-tagline-pill">Smarter Homes &middot; Less Waste &middot; A Brighter Future</span>
+        <h1 class="hero-main-title">
+          Turn Your Household Data Into Real <span class="hero-savings-green">Savings</span>
+        </h1>
+        <p class="hero-body-desc">
+          HomeResource helps you understand and reduce waste across electricity, water, food, money and time &mdash; by finding hidden connections, spotting anomalies and showing you what to do next.
+        </p>
+
+        <div class="hero-buttons-row">
+          <button class="btn-hero-cta" id="hero-start-btn">
+            <span>Start Now</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <button class="btn-hero-watch" id="hero-watch-btn">
+            <span class="watch-play-icon">&#9658;</span>
+            <span>Watch How It Works</span>
+            <span class="watch-time-tag">1:12</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: High-Tech Living SVG Smart Connected Eco-Home & Conduits -->
+      <div class="hero-visual-column">
+        <div class="hero-svg-stage-box" id="hero-svg-box">
+          <svg class="hero-living-svg" viewBox="0 0 840 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive Living Smart Connected Eco Home with Resource Conduits">
+            <defs>
+              <!-- Ambient & Lighting Gradients -->
+              <radialGradient id="stageGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.22" />
+                <stop offset="60%" stop-color="#0f2b33" stop-opacity="0.1" />
+                <stop offset="100%" stop-color="#081418" stop-opacity="0" />
+              </radialGradient>
+
+              <linearGradient id="groundGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0f2b33" />
+                <stop offset="100%" stop-color="#061216" />
+              </linearGradient>
+
+              <linearGradient id="wallLeft" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#162e36" />
+                <stop offset="100%" stop-color="#0e1e24" />
+              </linearGradient>
+
+              <linearGradient id="wallRight" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1e3e49" />
+                <stop offset="100%" stop-color="#13272e" />
+              </linearGradient>
+
+              <linearGradient id="roofSlab" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1c3742" />
+                <stop offset="100%" stop-color="#0c181d" />
+              </linearGradient>
+
+              <linearGradient id="solarCellGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#152b45" />
+                <stop offset="50%" stop-color="#1e3f65" />
+                <stop offset="100%" stop-color="#0d1b2d" />
+              </linearGradient>
+
+              <linearGradient id="solarShimmerGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
+                <stop offset="50%" stop-color="#2dd4bf" stop-opacity="0.45" />
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+              </linearGradient>
+
+              <linearGradient id="glassCurtain" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.25" />
+                <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.1" />
+                <stop offset="100%" stop-color="#0f2b33" stop-opacity="0.4" />
+              </linearGradient>
+
+              <linearGradient id="interiorAmberGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.5" />
+                <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#d97706" stop-opacity="0.0" />
+              </linearGradient>
+
+              <linearGradient id="waterTankGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" />
+                <stop offset="100%" stop-color="#0284c7" stop-opacity="0.9" />
+              </linearGradient>
+
+              <!-- Neon Glow Filters -->
+              <filter id="glow-elec" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <filter id="glow-water" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <filter id="glow-food" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <filter id="glow-money" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <filter id="glow-violet" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <!-- Card Drop Shadow Filter -->
+              <filter id="card-shadow" x="-10%" y="-10%" width="125%" height="130%">
+                <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.6" />
+              </filter>
+            </defs>
+
+            <!-- 1. Ambient Background Glow Sphere -->
+            <ellipse cx="430" cy="280" rx="340" ry="200" fill="url(#stageGlow)" />
+
+            <!-- 2. Isometric Architectural Ground Pedestal & Garden Platform -->
+            <g class="ground-structure">
+              <!-- Shadow base -->
+              <polygon points="160,400 420,515 690,395 430,285" fill="#040c0f" opacity="0.75" />
+              <!-- Upper lawn slab -->
+              <polygon points="170,390 420,500 680,385 430,280" fill="url(#groundGrad)" stroke="rgba(45, 212, 191, 0.25)" stroke-width="1.5" />
+              <!-- Terrace pavement grid lines -->
+              <line x1="330" y1="460" x2="510" y2="380" stroke="rgba(45, 212, 191, 0.12)" stroke-width="1" />
+              <line x1="370" y1="480" x2="550" y2="400" stroke="rgba(45, 212, 191, 0.12)" stroke-width="1" />
+              <line x1="420" y1="380" x2="420" y2="500" stroke="rgba(45, 212, 191, 0.15)" stroke-width="1" stroke-dasharray="3,3" />
+
+              <!-- Illuminated Pathway Bollards -->
+              <circle cx="340" cy="465" r="3" fill="#2dd4bf" filter="url(#glow-money)" />
+              <circle cx="380" cy="485" r="3" fill="#2dd4bf" filter="url(#glow-money)" />
+              <circle cx="460" cy="470" r="3" fill="#2dd4bf" filter="url(#glow-money)" />
+              <circle cx="510" cy="445" r="3" fill="#2dd4bf" filter="url(#glow-money)" />
+            </g>
+
+            <!-- 3. Smart Villa Architecture (Modern Cantilever Multi-Tier) -->
+            <g class="home-architecture" id="svg-eco-home" style="cursor: pointer;" title="HomeResource Smart Connected Villa — Click to Get Started">
+              
+              <!-- Ground Level: Warm Glass Living Pavilion & Kitchen -->
+              <g class="ground-floor">
+                <!-- Left Solid Wall with Wood/Stone Texture -->
+                <polygon points="280,320 410,375 410,440 280,385" fill="url(#wallLeft)" stroke="rgba(45, 212, 191, 0.18)" stroke-width="1.2" />
+                
+                <!-- Right Panoramic Glass Lounge Curtain Wall -->
+                <polygon points="410,375 580,300 580,365 410,440" fill="url(#glassCurtain)" stroke="rgba(45, 212, 191, 0.35)" stroke-width="1.5" />
+                
+                <!-- Interior Warm Lounge Amber Glow -->
+                <polygon points="414,378 576,305 576,362 414,435" fill="url(#interiorAmberGrad)" class="warm-interior-glow" />
+
+                <!-- Floor Lamp / Interior Light Silhouette -->
+                <line x1="480" y1="360" x2="480" y2="395" stroke="#fbbf24" stroke-width="2" />
+                <circle cx="480" cy="360" r="6" fill="#fbbf24" filter="url(#glow-elec)" opacity="0.85" />
+
+                <!-- Glass Mullions & Structural Columns -->
+                <line x1="465" y1="350" x2="465" y2="415" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1" />
+                <line x1="520" y1="326" x2="520" y2="390" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1" />
+                
+                <!-- Entry Door Outline -->
+                <polygon points="340,360 375,375 375,415 340,400" fill="#081519" stroke="#2dd4bf" stroke-width="1" />
+              </g>
+
+              <!-- Upper Level: Cantilevered Master Suite & Panoramic Terrace -->
+              <g class="upper-floor">
+                <!-- Cantilever Projection Shadow -->
+                <polygon points="260,250 420,320 420,335 260,265" fill="#03080a" opacity="0.6" />
+
+                <!-- Upper Left Modern Wall -->
+                <polygon points="260,240 420,310 420,370 260,300" fill="url(#wallRight)" stroke="rgba(45, 212, 191, 0.25)" stroke-width="1.2" />
+
+                <!-- Upper Front Glass Terrace & Suite -->
+                <polygon points="420,310 570,240 570,300 420,370" fill="url(#glassCurtain)" stroke="rgba(45, 212, 191, 0.35)" stroke-width="1.2" />
+
+                <!-- Bedroom Ambient Interior Glow -->
+                <polygon points="424,313 566,245 566,296 424,365" fill="url(#interiorAmberGrad)" opacity="0.45" />
+
+                <!-- Glass Balustrade Horizontal Accent -->
+                <line x1="420" y1="335" x2="570" y2="265" stroke="#2dd4bf" stroke-width="2" stroke-opacity="0.7" />
+              </g>
+
+              <!-- Rooftop Photovoltaic Solar Array (12 High-Efficiency Monocrystalline Panels) -->
+              <g class="solar-roof-array">
+                <!-- Angled Aerodynamic Roof Plane -->
+                <polygon points="240,225 420,135 600,215 420,305" fill="url(#roofSlab)" stroke="#2dd4bf" stroke-width="1.6" />
+
+                <!-- Solar Panel Grids (Deep Blue with Cyan Borders) -->
+                <!-- Row 1 -->
+                <polygon points="280,215 350,180 385,198 315,233" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+                <polygon points="360,175 430,140 465,158 395,193" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+                <polygon points="440,145 510,180 475,198 405,163" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+                <polygon points="520,185 555,203 520,220 485,203" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+
+                <!-- Row 2 -->
+                <polygon points="325,238 395,203 430,220 360,255" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+                <polygon points="405,198 475,163 510,180 440,215" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+                <polygon points="370,260 440,225 475,243 405,278" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+                <polygon points="450,220 520,185 555,203 485,238" fill="url(#solarCellGrad)" stroke="#38bdf8" stroke-width="0.8" />
+
+                <!-- Solar Glint / Shimmer Over Roof -->
+                <polygon points="270,220 420,145 570,220 420,295" fill="url(#solarShimmerGrad)" class="solar-shimmer" pointer-events="none" />
+              </g>
+
+              <!-- Smart Battery Power Storage Tower (Left Flank) -->
+              <g class="smart-battery-unit">
+                <rect x="235" y="325" width="28" height="52" rx="4" fill="#081418" stroke="#10b981" stroke-width="1.4" filter="url(#glow-food)" />
+                <text x="249" y="337" font-size="6" font-weight="700" fill="#10b981" text-anchor="middle" letter-spacing="0.5">ECO-BAT</text>
+                <!-- 4 Sequentially Pulsing LED Battery Bars -->
+                <rect x="240" y="342" width="18" height="3" rx="1.5" fill="#10b981" class="battery-led-bar" />
+                <rect x="240" y="348" width="18" height="3" rx="1.5" fill="#10b981" class="battery-led-bar" />
+                <rect x="240" y="354" width="18" height="3" rx="1.5" fill="#10b981" class="battery-led-bar" />
+                <rect x="240" y="360" width="18" height="3" rx="1.5" fill="#10b981" class="battery-led-bar" />
+                <!-- Conduit Line to House Base -->
+                <line x1="263" y1="355" x2="280" y2="355" stroke="#10b981" stroke-width="2" />
+              </g>
+
+              <!-- Rainwater Harvesting Cistern with Live Water Ripple (Right Flank) -->
+              <g class="rainwater-harvest-unit">
+                <!-- Tank Shell -->
+                <rect x="585" y="330" width="34" height="54" rx="6" fill="#081820" stroke="#38bdf8" stroke-width="1.4" />
+                <text x="602" y="342" font-size="6" font-weight="700" fill="#38bdf8" text-anchor="middle">AQUA-RES</text>
+                <!-- Water Gauge Level with Ripple -->
+                <rect x="589" y="348" width="26" height="32" rx="3" fill="url(#waterTankGrad)" class="cistern-wave" />
+                <!-- Inlet Piping from Roof Gutters -->
+                <path d="M 590 220 L 602 220 L 602 330" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="3,3" />
+                <line x1="585" y1="365" x2="570" y2="365" stroke="#38bdf8" stroke-width="2" />
+              </g>
+
+              <!-- Smart Automation Antenna & Radar Pulse Dome (Roof Peak) -->
+              <g class="automation-beacon">
+                <!-- Spire -->
+                <line x1="420" y1="135" x2="420" y2="95" stroke="#2dd4bf" stroke-width="2.5" />
+                <circle cx="420" cy="95" r="5" fill="#2dd4bf" filter="url(#glow-money)" />
+                <!-- Pulsing Radar Rings -->
+                <circle cx="420" cy="95" r="4" fill="none" stroke="#2dd4bf" class="radar-ring-1" />
+                <circle cx="420" cy="95" r="4" fill="none" stroke="#2dd4bf" class="radar-ring-2" />
+              </g>
+            </g>
+
+            <!-- 4. The 5 Connected Energy Conduits (Curved Animated Living Streams) -->
+            <g class="conduit-streams" pointer-events="none" fill="none">
+              <!-- Electricity Stream (⚡ Gold) -->
+              <path fill="none" class="stream-line stream-elec" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" d="M 620 95 C 530 95, 480 120, 435 145" />
+              <circle r="4.5" fill="#fbbf24" filter="url(#glow-elec)">
+                <animateMotion dur="2.2s" repeatCount="indefinite" path="M 620 95 C 530 95, 480 120, 435 145" />
+              </circle>
+
+              <!-- Water Stream (💧 Azure Cyan) -->
+              <path fill="none" class="stream-line stream-water" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" d="M 630 450 C 610 430, 600 395, 602 384" />
+              <circle r="4.5" fill="#38bdf8" filter="url(#glow-water)">
+                <animateMotion dur="2.4s" repeatCount="indefinite" path="M 630 450 C 610 430, 600 395, 602 384" />
+              </circle>
+
+              <!-- Food Stream (🍽️ Emerald Green) -->
+              <path fill="none" class="stream-line stream-food" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" d="M 200 455 C 250 455, 290 420, 330 380" />
+              <circle r="4.5" fill="#34d399" filter="url(#glow-food)">
+                <animateMotion dur="2.8s" repeatCount="indefinite" path="M 200 455 C 250 455, 290 420, 330 380" />
+              </circle>
+
+              <!-- Money / Cost Savings Stream (🪙 Teal Mint) -->
+              <path fill="none" class="stream-line stream-money" stroke="#2dd4bf" stroke-width="2.2" stroke-linecap="round" d="M 220 90 C 290 90, 350 170, 410 260" />
+              <circle r="4.5" fill="#2dd4bf" filter="url(#glow-money)">
+                <animateMotion dur="2.5s" repeatCount="indefinite" path="M 220 90 C 290 90, 350 170, 410 260" />
+              </circle>
+
+              <!-- Time Saved Stream (⏱️ Chrono Violet) -->
+              <path fill="none" class="stream-line stream-time" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" d="M 180 270 C 240 270, 290 280, 340 290" />
+              <circle r="4.5" fill="#a78bfa" filter="url(#glow-violet)">
+                <animateMotion dur="3.0s" repeatCount="indefinite" path="M 180 270 C 240 270, 290 280, 340 290" />
+              </circle>
+            </g>
+
+            <!-- 5. Five Interactive Glowing Resource Badges (Click opens Sign Up Modal) -->
+            
+            <!-- Badge 1: ⚡ Electricity (Top Right) -->
+            <g class="svg-badge badge-elec badge-float-1" transform="translate(590, 62)" data-auth-trigger="signup" role="button" tabindex="0">
+              <rect width="195" height="66" rx="14" fill="#0d242a" stroke="#fbbf24" stroke-width="1.5" filter="url(#card-shadow)" />
+              <!-- Icon Circle -->
+              <circle cx="28" cy="33" r="18" fill="rgba(251, 191, 36, 0.15)" stroke="#fbbf24" stroke-width="1.2" />
+              <text x="28" y="39" font-size="16" text-anchor="middle">⚡</text>
+              <!-- Labels -->
+              <text x="56" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.06em">ELECTRICITY</text>
+              <text x="56" y="48" font-family="system-ui, sans-serif" font-size="17" font-weight="800" fill="#ffffff">18.4 <tspan font-size="11" font-weight="500" fill="#cbd5e1">kWh</tspan></text>
+              <!-- Delta Pill -->
+              <rect x="146" y="32" width="40" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10b981" stroke-width="1" />
+              <text x="166" y="46" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#34d399" text-anchor="middle">&darr; 8%</text>
+            </g>
+
+            <!-- Badge 2: 💧 Water (Bottom Right) -->
+            <g class="svg-badge badge-water badge-float-2" transform="translate(605, 418)" data-auth-trigger="signup" role="button" tabindex="0">
+              <rect width="185" height="66" rx="14" fill="#0d242a" stroke="#38bdf8" stroke-width="1.5" filter="url(#card-shadow)" />
+              <circle cx="28" cy="33" r="18" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1.2" />
+              <text x="28" y="39" font-size="16" text-anchor="middle">💧</text>
+              <text x="56" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.06em">WATER USAGE</text>
+              <text x="56" y="48" font-family="system-ui, sans-serif" font-size="17" font-weight="800" fill="#ffffff">328 <tspan font-size="11" font-weight="500" fill="#cbd5e1">L</tspan></text>
+              <rect x="136" y="32" width="40" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10b981" stroke-width="1" />
+              <text x="156" y="46" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#34d399" text-anchor="middle">&darr; 12%</text>
+            </g>
+
+            <!-- Badge 3: 🍽️ Food Waste (Bottom Left) -->
+            <g class="svg-badge badge-food badge-float-3" transform="translate(35, 420)" data-auth-trigger="signup" role="button" tabindex="0">
+              <rect width="180" height="66" rx="14" fill="#0d242a" stroke="#34d399" stroke-width="1.5" filter="url(#card-shadow)" />
+              <circle cx="28" cy="33" r="18" fill="rgba(52, 211, 153, 0.15)" stroke="#34d399" stroke-width="1.2" />
+              <text x="28" y="39" font-size="16" text-anchor="middle">🍽️</text>
+              <text x="56" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.06em">FOOD WASTE</text>
+              <text x="56" y="48" font-family="system-ui, sans-serif" font-size="17" font-weight="800" fill="#ffffff">2.3 <tspan font-size="11" font-weight="500" fill="#cbd5e1">kg</tspan></text>
+              <rect x="130" y="32" width="40" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10b981" stroke-width="1" />
+              <text x="150" y="46" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#34d399" text-anchor="middle">&darr; 15%</text>
+            </g>
+
+            <!-- Badge 4: 🪙 Money Saved (Top Left) -->
+            <g class="svg-badge badge-money badge-float-4" transform="translate(35, 55)" data-auth-trigger="signup" role="button" tabindex="0">
+              <rect width="195" height="66" rx="14" fill="#0d242a" stroke="#2dd4bf" stroke-width="1.5" filter="url(#card-shadow)" />
+              <circle cx="28" cy="33" r="18" fill="rgba(45, 212, 191, 0.15)" stroke="#2dd4bf" stroke-width="1.2" />
+              <text x="28" y="39" font-size="16" text-anchor="middle">🪙</text>
+              <text x="56" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.06em">MONEY SAVED</text>
+              <text x="56" y="48" font-family="system-ui, sans-serif" font-size="17" font-weight="800" fill="#ffffff">$42.80 <tspan font-size="10" font-weight="500" fill="#cbd5e1">/wk</tspan></text>
+              <rect x="142" y="32" width="44" height="20" rx="10" fill="rgba(45, 212, 191, 0.2)" stroke="#2dd4bf" stroke-width="1" />
+              <text x="164" y="46" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#2dd4bf" text-anchor="middle">+$14.20</text>
+            </g>
+
+            <!-- Badge 5: ⏱️ Time Saved (Mid Left) -->
+            <g class="svg-badge badge-time badge-float-5" transform="translate(20, 238)" data-auth-trigger="signup" role="button" tabindex="0">
+              <rect width="175" height="66" rx="14" fill="#0d242a" stroke="#a78bfa" stroke-width="1.5" filter="url(#card-shadow)" />
+              <circle cx="28" cy="33" r="18" fill="rgba(167, 139, 250, 0.15)" stroke="#a78bfa" stroke-width="1.2" />
+              <text x="28" y="39" font-size="16" text-anchor="middle">⏱️</text>
+              <text x="56" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.06em">TIME SAVED</text>
+              <text x="56" y="48" font-family="system-ui, sans-serif" font-size="17" font-weight="800" fill="#ffffff">3.2 <tspan font-size="11" font-weight="500" fill="#cbd5e1">hrs</tspan></text>
+              <rect x="126" y="32" width="40" height="20" rx="10" fill="rgba(167, 139, 250, 0.2)" stroke="#a78bfa" stroke-width="1" />
+              <text x="146" y="46" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#a78bfa" text-anchor="middle">Auto</text>
+            </g>
+
+            <!-- 6. Elegant Handwritten Annotation with Curved SVG Arrow -->
+            <g class="handwritten-annotation" pointer-events="none">
+              <text x="460" y="36" font-family="'Caveat', cursive, sans-serif" font-size="24" font-weight="700" fill="#f8fafc" transform="rotate(-3, 460, 36)">
+                Small changes. Big impact. ✨
+              </text>
+              <!-- Curved dynamic pointer arrow pointing to the smart home solar roof -->
+              <path d="M 520 44 C 545 60, 525 80, 485 95" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,3" />
+              <polygon points="488,88 476,98 491,101" fill="#2dd4bf" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Resource Dashboard Ribbon (As shown in Reference UI) -->
+  <section class="bottom-ribbon-section">
+    <div class="ribbon-grid">
+      
+      <!-- Card 1: Your Resources with Mini Cards & Live Sparklines -->
+      <div class="ribbon-card">
+        <div class="ribbon-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+          </svg>
+          <span>Your Resources</span>
+        </div>
+
+        <div class="mini-resources-grid">
+          <!-- Electricity -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>⚡</span>
+              <span>Electricity</span>
+            </div>
+            <div class="chip-val">18.4 <span style="font-size: 0.72rem; color: #94a3b8;">kWh</span></div>
+            <div class="chip-delta delta-down">&darr; 8%</div>
+            <!-- SVG Sparkline -->
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,15 Q20,18 35,8 T80,12" fill="none" stroke="#fbbf24" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Water -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>💧</span>
+              <span>Water</span>
+            </div>
+            <div class="chip-val">328 <span style="font-size: 0.72rem; color: #94a3b8;">L</span></div>
+            <div class="chip-delta delta-down">&darr; 12%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,8 Q25,18 45,6 T80,10" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Food -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>🍽️</span>
+              <span>Food</span>
+            </div>
+            <div class="chip-val">2.3 <span style="font-size: 0.72rem; color: #94a3b8;">kg</span></div>
+            <div class="chip-delta delta-down">&darr; 15%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,16 Q20,6 40,14 T80,7" fill="none" stroke="#34d399" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Money -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>🪙</span>
+              <span>Money</span>
+            </div>
+            <div class="chip-val">$42.80</div>
+            <div class="chip-delta delta-down">&darr; 10%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,12 Q20,16 45,5 T80,11" fill="none" stroke="#eab308" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Time -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>⏱️</span>
+              <span>Time</span>
+            </div>
+            <div class="chip-val">3.2 <span style="font-size: 0.72rem; color: #94a3b8;">hrs</span></div>
+            <div class="chip-delta delta-down">&darr; 7%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,14 Q30,5 50,15 T80,8" fill="none" stroke="#2dd4bf" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Recent Insight -->
+      <div class="insight-ribbon-card">
+        <div>
+          <div class="ribbon-card-header" style="color: #fbbf24;">
+            <span>💡</span>
+            <span>Recent Insight</span>
+          </div>
+
+          <div class="insight-top-row">
+            <div class="insight-warn-icon">⚠️</div>
+            <div>
+              <div class="insight-title">Higher electricity usage detected</div>
+              <p class="insight-desc">
+                Today's usage is 62% higher than your normal pattern. Likely related to increased water pump activity.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <a href="./dashboard.html" class="insight-btn">View Details &rarr;</a>
+      </div>
+
+      <!-- Card 3: Quick Actions -->
+      <div class="quick-actions-card">
+        <div class="ribbon-card-header">
+          <span>⚡</span>
+          <span>Quick Actions</span>
+        </div>
+
+        <a href="./simulator.html" class="qa-link-btn">
+          <div class="qa-left-info">
+            <span>⚛</span>
+            <span>Run What-If Simulation</span>
+          </div>
+          <span>&rarr;</span>
+        </a>
+
+        <a href="./dashboard.html" class="qa-link-btn">
+          <div class="qa-left-info">
+            <span>📈</span>
+            <span>View Resource Graph</span>
+          </div>
+          <span>&rarr;</span>
+        </a>
+
+        <a href="./dashboard.html" class="qa-link-btn">
+          <div class="qa-left-info">
+            <span>📑</span>
+            <span>Explore Historical Data</span>
+          </div>
+          <span>&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Status Sub-bar -->
+    <div class="ribbon-bottom-status">
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <span style="color: #2dd4bf;">🌱</span>
+        <span>Real data. Smarter decisions.</span>
+      </div>
+
+      <div class="legend-dots">
+        <div class="dot-item"><span class="dot dot-elec"></span><span>Electricity</span></div>
+        <div class="dot-item"><span class="dot dot-water"></span><span>Water</span></div>
+        <div class="dot-item"><span class="dot dot-food"></span><span>Food</span></div>
+        <div class="dot-item"><span class="dot dot-money"></span><span>Money</span></div>
+        <div class="dot-item"><span class="dot dot-time"></span><span>Time</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Sign Up & Login Modal -->
+  <div class="auth-modal-overlay" id="auth-modal">
+    <div class="auth-modal-card">
+      <div class="auth-modal-header">
+        <div class="auth-brand-badge">
+          <div class="brand-icon-leaf" style="width: 28px; height: 28px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+            </svg>
+          </div>
+          <span>HomeResource</span>
+        </div>
+        <button class="auth-close-btn" id="auth-close-btn">&times;</button>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="auth-tabs-row">
+        <button class="auth-tab-btn active" id="tab-signup-btn">Create Account</button>
+        <button class="auth-tab-btn" id="tab-login-btn">Sign In</button>
+      </div>
+
+      <div class="auth-modal-body">
+        <!-- Animated Eco Pulse Banner -->
+        <div class="auth-eco-banner">
+          <svg width="38" height="38" viewBox="0 0 48 48" class="auth-eco-svg">
+            <circle cx="24" cy="24" r="20" fill="rgba(45, 212, 191, 0.12)" stroke="#2dd4bf" stroke-width="1.5" class="auth-pulse-ring" />
+            <path d="M 24 10 L 35 16 L 35 28 C 35 35 24 40 24 40 C 24 40 13 35 13 28 L 13 16 Z" fill="rgba(20, 184, 166, 0.25)" stroke="#2dd4bf" stroke-width="1.8" />
+            <path d="M 20 24 L 23 27 L 29 20" fill="none" stroke="#2dd4bf" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="auth-eco-banner-text">
+            <div class="auth-eco-banner-title">Join 12,000+ Smart Households</div>
+            <div class="auth-eco-banner-sub">Cut utility waste &amp; track all 5 resources in real-time</div>
+          </div>
+        </div>
+
+        <!-- Error/Status Message -->
+        <div id="auth-error-msg" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 8px; padding: 0.6rem; font-size: 0.85rem; margin-bottom: 1rem;"></div>
+
+        <!-- 1-Click Instant Guest Demo Button -->
+        <button class="btn-demo-guest" id="guest-demo-btn">
+          <span>⚡</span>
+          <span>Continue as Guest (Instant Demo Access)</span>
+        </button>
+
+        <div class="auth-divider">or enter details</div>
+
+        <!-- Sign Up Form -->
+        <form id="signup-form">
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="auth-form-input" placeholder="e.g. Alex Morgan" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" class="auth-form-input" placeholder="alex@example.com" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-password">Password</label>
+            <input type="password" id="signup-password" class="auth-form-input" placeholder="At least 6 characters" minlength="6" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-household">Household Name</label>
+            <input type="text" id="signup-household" class="auth-form-input" placeholder="e.g. Green Haven Villa" value="Green Haven Villa">
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="signup-submit-btn">Get Started &mdash; Free</button>
+        </form>
+
+        <!-- Login Form (Initially Hidden) -->
+        <form id="login-form" style="display: none;">
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="auth-form-input" placeholder="demo@homeresource.io" value="demo@homeresource.io" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="auth-form-input" placeholder="••••••••" value="demo1234" required>
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="login-submit-btn">Sign In to Dashboard</button>
+        </form>
+      </div>
+    </div>
   </div>
+
+  <!-- Script Modules -->
+  <script type="module" src="./js/pages/landing.js"></script>
 </body>
 </html>
