@@ -83,7 +83,22 @@ app.include_router(intelligence_router, prefix=settings.API_V1_STR)
 app.include_router(simulation_router, prefix=settings.API_V1_STR)
 app.include_router(export_router, prefix=settings.API_V1_STR)
 
-# Mount Frontend Static Directory
+# Mount Frontend Static Directory & Page Routes
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))
+
 if os.path.isdir(frontend_dir):
+    from fastapi.responses import FileResponse
+
+    @app.get("/dashboard", include_in_schema=False)
+    async def dashboard_page():
+        return FileResponse(os.path.join(frontend_dir, "dashboard.html"))
+
+    @app.get("/simulator", include_in_schema=False)
+    async def simulator_page():
+        return FileResponse(os.path.join(frontend_dir, "simulator.html"))
+
+    @app.get("/settings", include_in_schema=False)
+    async def settings_page():
+        return FileResponse(os.path.join(frontend_dir, "settings.html"))
+
     app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
