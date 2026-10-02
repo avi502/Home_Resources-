@@ -5,18 +5,20 @@ import { formatNumber, formatCurrency, formatDate } from '../utils/formatters.js
 import { showToast } from '../components/toast.js';
 import { setupModal } from '../components/modal.js';
 import { renderTrendChart, renderDistributionChart } from '../charts/resourceCharts.js';
+import { SmartHome3D } from '../components/smartHome3D.js';
 
 let currentEntries = [];
 let currentHouseholdId = 1;
+let smartHomeInstance = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   currentHouseholdId = storage.getHouseholdId();
 
-  // 1. Setup Tab Switching (Overview, Monitoring, Analytics)
-  setupNavTabs();
+  // 1. Initialize Interactive 3D Rotating & Zooming Smart Home
+  initSmartHome3D();
 
-  // 2. Setup 3D Hotspot Interactive Beacons
-  setupHotspotBeacons();
+  // 2. Setup Top Pill Tabs Navigation (Overview, Monitoring, Analytics)
+  setupNavTabs();
 
   // 3. Setup Telemetry Logging Modal
   setupModal('add-entry-modal', 'open-add-entry-btn');
@@ -42,6 +44,120 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadRelationships();
 });
 
+// Initialize Interactive 3D Eco-Smart Home
+function initSmartHome3D() {
+  const stage = document.getElementById('three-home-stage');
+  if (!stage) return;
+
+  try {
+    smartHomeInstance = new SmartHome3D('three-home-stage');
+
+    // Camera preset buttons
+    const presetBtns = document.querySelectorAll('.cam-preset-btn');
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        presetBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const focus = btn.dataset.focus;
+        if (focus === 'overview') {
+          smartHomeInstance.resetCamera();
+        } else {
+          smartHomeInstance.focusOnZone(focus);
+        }
+      });
+    });
+
+    // Auto-Rotate Toggle Button
+    const rotateBtn = document.getElementById('toggle-rotate-btn');
+    if (rotateBtn) {
+      rotateBtn.addEventListener('click', () => {
+        const isRotating = smartHomeInstance.toggleAutoRotate();
+        rotateBtn.classList.toggle('active', isRotating);
+      });
+    }
+
+    // Day / Night Toggle Button
+    const dayNightBtn = document.getElementById('toggle-daynight-btn');
+    if (dayNightBtn) {
+      dayNightBtn.addEventListener('click', () => {
+        const isDay = smartHomeInstance.toggleDayNight();
+        dayNightBtn.classList.toggle('active', !isDay);
+        dayNightBtn.querySelector('span').textContent = isDay ? 'Day Mode' : 'Night Mode';
+      });
+    }
+
+    // Reset Camera Button
+    const resetBtn = document.getElementById('reset-cam-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        smartHomeInstance.resetCamera();
+        presetBtns.forEach(b => b.classList.remove('active'));
+        const overviewBtn = document.querySelector('.cam-preset-btn[data-focus="overview"]');
+        if (overviewBtn) overviewBtn.classList.add('active');
+      });
+    }
+
+    // Bind Slim Toolbar Shortcuts to 3D Camera Focus
+    const tbThermometer = document.getElementById('tb-thermometer');
+    if (tbThermometer) {
+      tbThermometer.addEventListener('click', () => {
+        switchToMonitoringView();
+        smartHomeInstance.focusOnZone('bedroom');
+        activatePresetBtn('bedroom');
+      });
+    }
+
+    const tbBattery = document.getElementById('tb-battery');
+    if (tbBattery) {
+      tbBattery.addEventListener('click', () => {
+        switchToMonitoringView();
+        smartHomeInstance.focusOnZone('battery');
+        activatePresetBtn('battery');
+      });
+    }
+
+    const tbWater = document.getElementById('tb-water');
+    if (tbWater) {
+      tbWater.addEventListener('click', () => {
+        switchToMonitoringView();
+        smartHomeInstance.focusOnZone('water');
+        activatePresetBtn('water');
+      });
+    }
+
+    const tbDashboard = document.getElementById('tb-dashboard');
+    if (tbDashboard) {
+      tbDashboard.addEventListener('click', () => {
+        switchToMonitoringView();
+        smartHomeInstance.resetCamera();
+        activatePresetBtn('overview');
+      });
+    }
+  } catch (err) {
+    console.error('Failed to initialize 3D Smart Home:', err);
+  }
+}
+
+function switchToMonitoringView() {
+  const monitoringView = document.getElementById('monitoring-view');
+  const analyticsView = document.getElementById('analytics-view');
+  if (monitoringView) monitoringView.classList.add('active');
+  if (analyticsView) analyticsView.classList.remove('active');
+
+  const tabs = document.querySelectorAll('.pill-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  const monTab = document.querySelector('.pill-tab[data-tab="monitoring"]');
+  if (monTab) monTab.classList.add('active');
+}
+
+function activatePresetBtn(zone) {
+  const presetBtns = document.querySelectorAll('.cam-preset-btn');
+  presetBtns.forEach(b => {
+    b.classList.toggle('active', b.dataset.focus === zone);
+  });
+}
+
 // Setup Navigation Pill Tabs
 function setupNavTabs() {
   const tabs = document.querySelectorAll('.pill-tab');
@@ -60,6 +176,7 @@ function setupNavTabs() {
       if (target === 'monitoring' || target === 'overview') {
         if (monitoringView) monitoringView.classList.add('active');
         if (analyticsView) analyticsView.classList.remove('active');
+        if (smartHomeInstance) smartHomeInstance.onResize();
       } else if (target === 'analytics') {
         if (monitoringView) monitoringView.classList.remove('active');
         if (analyticsView) analyticsView.classList.add('active');
@@ -71,62 +188,11 @@ function setupNavTabs() {
     });
   });
 
-  // Also bind sidebar buttons
   const waveBtn = document.getElementById('tb-wave');
   if (waveBtn) {
     waveBtn.addEventListener('click', () => {
       const analyticsTab = document.querySelector('.pill-tab[data-tab="analytics"]');
       if (analyticsTab) analyticsTab.click();
-    });
-  }
-}
-
-// Setup Interactive Hotspots on 3D Home
-function setupHotspotBeacons() {
-  const beacons = document.querySelectorAll('.hotspot-beacon');
-  const hud = document.getElementById('hotspot-hud');
-  const hudZoneName = document.getElementById('hud-zone-name');
-  const hudContent = document.getElementById('hud-content');
-  const hudCloseBtn = document.getElementById('hud-close-btn');
-
-  const zoneData = {
-    solar: {
-      title: 'Rooftop Solar Array (Photovoltaic)',
-      text: 'Peak Output: 3.8 kW • 12 Monocrystalline Panels • 94% Inverter Efficiency • Zero Grid Draw During Peak.'
-    },
-    bedroom: {
-      title: 'Upper Floor Master Suite',
-      text: 'Ambient Temperature: 28°C • Automated Thermal Shading Active • Passive Ventilation Loop Engaged.'
-    },
-    living: {
-      title: 'Open Cutaway Living Room',
-      text: 'Indoor Air Quality: CO₂ 520 ppm (Good) • Current Electrical Load: 1.3 kW • Smart HVAC Setpoint: 24°C.'
-    },
-    battery: {
-      title: 'Exterior Eco Energy Storage Unit',
-      text: 'Capacity: 82% Stored (11.2 kWh Reserve) • State: Healthy Floating Charge • Expected Autonomy: 18.5 hrs.'
-    },
-    water: {
-      title: 'Ground Loop & Cascading Water Pump',
-      text: 'Daily Consumption: 42 L • Pump Energy Intensity: 0.0012 kWh/L • Cascading Cross-Resource Simulation Model Active.'
-    }
-  };
-
-  beacons.forEach(beacon => {
-    beacon.addEventListener('click', () => {
-      const zoneKey = beacon.dataset.zone;
-      const info = zoneData[zoneKey];
-      if (info && hud && hudZoneName && hudContent) {
-        hudZoneName.textContent = info.title;
-        hudContent.textContent = info.text;
-        hud.classList.remove('hidden');
-      }
-    });
-  });
-
-  if (hudCloseBtn && hud) {
-    hudCloseBtn.addEventListener('click', () => {
-      hud.classList.add('hidden');
     });
   }
 }

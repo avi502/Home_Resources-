@@ -11,7 +11,10 @@
   <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/pages/dashboard.css">
 
-  <!-- Chart.js for Historical Analysis -->
+  <!-- Three.js for Interactive 3D Rotating & Zooming Eco-Home -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Chart.js for Historical Telemetry Analysis -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 </head>
 <body class="realist-body">
@@ -89,7 +92,7 @@
     <!-- Slim Left Icon Toolbar -->
     <aside class="slim-toolbar">
       <div class="toolbar-group">
-        <button class="toolbar-btn active" title="Dashboard Monitoring">
+        <button class="toolbar-btn active" id="tb-dashboard" title="Dashboard Monitoring">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect>
             <rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
@@ -100,17 +103,17 @@
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
           </svg>
         </button>
-        <button class="toolbar-btn" title="Climate & Thermal" id="tb-thermometer">
+        <button class="toolbar-btn" title="Climate & Thermal Focus" id="tb-thermometer">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
           </svg>
         </button>
-        <button class="toolbar-btn" title="Storage & Battery" id="tb-battery">
+        <button class="toolbar-btn" title="Storage & Battery Focus" id="tb-battery">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="1" y="6" width="18" height="12" rx="2"></rect><line x1="23" y1="11" x2="23" y2="13"></line>
           </svg>
         </button>
-        <button class="toolbar-btn" title="Water & Resources" id="tb-water">
+        <button class="toolbar-btn" title="Water & Ground Well Focus" id="tb-water">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
           </svg>
@@ -131,20 +134,16 @@
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </a>
-        <button class="toolbar-btn" title="Support & Docs" onclick="window.open('/docs', '_blank')">
+        <button class="toolbar-btn" title="Interactive Simulator" onclick="window.location.href='/simulator.html'">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-          </svg>
-        </button>
-        <button class="toolbar-btn" title="Menu Drawer" id="tb-menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </button>
       </div>
     </aside>
 
-    <!-- Main Workspace Area -->
+    <!-- Main Workspace Viewport -->
     <main class="dashboard-viewport">
       
       <!-- Flagship Monitoring View (Active by Default) -->
@@ -162,19 +161,10 @@
                   <p class="card-subtitle">Last update 2 min ago</p>
                 </div>
                 <div class="card-actions">
-                  <button class="mini-action-btn" title="Expand View">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <polyline points="9 21 3 21 3 15"></polyline>
-                      <line x1="21" y1="3" x2="14" y2="10"></line>
-                      <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                  </button>
-                  <button class="mini-action-btn" id="refresh-conditions-btn" title="Refresh">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                    </svg>
-                  </button>
+                  <div class="radar-scan-badge" title="Live Sensor Polling">
+                    <span class="radar-dot"></span>
+                    <span class="radar-wave"></span>
+                  </div>
                 </div>
               </div>
 
@@ -182,19 +172,19 @@
               <div class="conditions-subgrid">
                 <div class="submetric-box">
                   <div class="submetric-label">Humidity</div>
-                  <div class="submetric-val"><span id="cond-humidity">45</span> <span class="val-unit">%</span></div>
+                  <div class="submetric-val"><span id="cond-humidity" class="counter-num">45</span> <span class="val-unit">%</span></div>
                 </div>
                 <div class="submetric-box">
                   <div class="submetric-label">Light Rain</div>
-                  <div class="submetric-val"><span id="cond-temp">24</span> <span class="val-unit">°C</span></div>
+                  <div class="submetric-val"><span id="cond-temp" class="counter-num">24</span> <span class="val-unit">°C</span></div>
                 </div>
                 <div class="submetric-box">
                   <div class="submetric-label">Wind Speed</div>
-                  <div class="submetric-val"><span id="cond-wind">5.2</span> <span class="val-unit">ms/</span></div>
+                  <div class="submetric-val"><span id="cond-wind" class="counter-num">5.2</span> <span class="val-unit">ms/</span></div>
                 </div>
                 <div class="submetric-box">
                   <div class="submetric-label">Light Level</div>
-                  <div class="submetric-val"><span id="cond-light">1,200</span> <span class="val-unit">lux</span></div>
+                  <div class="submetric-val"><span id="cond-light" class="counter-num">1,200</span> <span class="val-unit">lux</span></div>
                 </div>
               </div>
             </div>
@@ -286,7 +276,6 @@
                   <span>0%</span>
                 </div>
                 <div class="exposure-canvas-box">
-                  <!-- Stepped Area SVG Graph -->
                   <svg class="stepped-chart-svg" viewBox="0 0 200 90" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="steppedGrad" x1="0" y1="0" x2="0" y2="1">
@@ -294,9 +283,7 @@
                         <stop offset="100%" stop-color="#2DD4BF" stop-opacity="0.0"/>
                       </linearGradient>
                     </defs>
-                    <!-- Stepped Area Fill -->
                     <polygon points="0,90 0,65 35,65 35,45 80,45 80,58 130,58 130,75 170,75 170,88 200,88 200,90" fill="url(#steppedGrad)" />
-                    <!-- Stepped Stroke Line -->
                     <polyline points="0,65 35,65 35,45 80,45 80,58 130,58 130,75 170,75 170,88 200,88" fill="none" stroke="#2DD4BF" stroke-width="2" />
                   </svg>
 
@@ -312,25 +299,47 @@
             </div>
           </div>
 
-          <!-- CENTER/RIGHT HERO 3D ARCHITECTURAL SHOWCASE -->
+          <!-- CENTER/RIGHT HERO: INTERACTIVE 3D ROTATING & ZOOMING SMART HOME -->
           <div class="hero-showcase-column">
-            <div class="glass-card isometric-viewport-card">
+            <div class="glass-card isometric-viewport-card" id="threeDCard">
               
-              <!-- 3D Isometric Home Cutaway Render -->
-              <div class="isometric-stage">
-                <img src="/assets/images/smart_home_iso.jpg" alt="Realist Home 3D Cutaway" class="iso-house-img" id="isoHouseImg">
-                
-                <!-- Corner Perspective Grid Marks -->
-                <div class="iso-grid-mark top-left">
-                  <span class="corner-label">45° ISO PERSPECTIVE</span>
-                </div>
-                <div class="iso-grid-mark top-right">
-                  <span class="corner-label">SMART RESIDENCE v1.0</span>
+              <!-- 3D Camera & Scene Control HUD Toolbar -->
+              <div class="three-controls-bar">
+                <div class="camera-preset-group">
+                  <button class="cam-preset-btn active" data-focus="overview" title="Full Architecture Overview">Full House</button>
+                  <button class="cam-preset-btn" data-focus="solar" title="Zoom to Solar Photovoltaic Roof">Solar Roof</button>
+                  <button class="cam-preset-btn" data-focus="living" title="Fly inside Living Room">Living Room</button>
+                  <button class="cam-preset-btn" data-focus="bedroom" title="Inspect Bedroom Suite">Bedroom</button>
+                  <button class="cam-preset-btn" data-focus="battery" title="Inspect Energy Storage Pack">Battery</button>
+                  <button class="cam-preset-btn" data-focus="water" title="Inspect Ground Loop & Well">Ground Well</button>
                 </div>
 
-                <!-- Interactive Hotspot Beacons -->
-                <!-- 1. Solar Roof Beacon -->
-                <div class="hotspot-beacon" style="top: 15%; left: 38%;" data-zone="solar">
+                <div class="scene-toggle-group">
+                  <button id="toggle-rotate-btn" class="cam-toggle-btn active" title="Toggle Auto-Rotation">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="23 4 23 10 17 10"></polyline>
+                      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                    <span>Auto-Rotate</span>
+                  </button>
+                  <button id="toggle-daynight-btn" class="cam-toggle-btn" title="Toggle Day/Night Simulation">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <span>Day/Night</span>
+                  </button>
+                  <button id="reset-cam-btn" class="cam-toggle-btn" title="Reset View Angle">
+                    <span>Reset</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Interactive WebGL Three.js 3D Viewport -->
+              <div id="three-home-stage" class="three-home-stage">
+                <!-- Three.js Canvas mounts here dynamically -->
+
+                <!-- 3D Projected Hotspot Beacons Tracking 3D Space -->
+                <div class="hotspot-beacon" data-zone="solar" title="Rooftop Solar Array">
                   <div class="beacon-pulse solar"></div>
                   <div class="beacon-dot solar"></div>
                   <div class="beacon-tooltip">
@@ -339,45 +348,46 @@
                   </div>
                 </div>
 
-                <!-- 2. Master Bedroom Beacon -->
-                <div class="hotspot-beacon" style="top: 38%; left: 62%;" data-zone="bedroom">
+                <div class="hotspot-beacon" data-zone="bedroom" title="Upper Bedroom Zone">
                   <div class="beacon-pulse cyan"></div>
                   <div class="beacon-dot cyan"></div>
                   <div class="beacon-tooltip">
                     <strong>Upper Bedroom Zone</strong>
-                    <span>28°C • Optimal Climate Condition</span>
+                    <span>28°C • Automated Shading</span>
                   </div>
                 </div>
 
-                <!-- 3. Living Room Cutaway Beacon -->
-                <div class="hotspot-beacon" style="top: 64%; left: 52%;" data-zone="living">
+                <div class="hotspot-beacon" data-zone="living" title="Open Living Room Cutaway">
                   <div class="beacon-pulse cyan"></div>
                   <div class="beacon-dot cyan"></div>
                   <div class="beacon-tooltip">
-                    <strong>Open Living Room</strong>
-                    <span>26°C • CO₂ 520 ppm • Load 1.3 kW</span>
+                    <strong>Living Room Cutaway</strong>
+                    <span>26°C • CO₂ 520 ppm • Draw 1.3 kW</span>
                   </div>
                 </div>
 
-                <!-- 4. Wall Battery Storage Beacon -->
-                <div class="hotspot-beacon" style="top: 58%; left: 74%;" data-zone="battery">
+                <div class="hotspot-beacon" data-zone="battery" title="Wall Energy Storage Pack">
                   <div class="beacon-pulse cyan"></div>
                   <div class="beacon-dot cyan"></div>
                   <div class="beacon-tooltip">
-                    <strong>Eco Storage Unit</strong>
+                    <strong>Wall Storage Unit</strong>
                     <span>82% Stored • 11.2 kWh Reserve</span>
                   </div>
                 </div>
 
-                <!-- 5. Subsurface Cascading Water Pump -->
-                <div class="hotspot-beacon" style="top: 80%; left: 58%;" data-zone="water">
+                <div class="hotspot-beacon" data-zone="water" title="Subsurface Cascading Water Loop">
                   <div class="beacon-pulse amber"></div>
                   <div class="beacon-dot amber"></div>
                   <div class="beacon-tooltip">
-                    <strong>Cascading Water Ground Loop</strong>
-                    <span>42 L Consumption • Pump Standby</span>
+                    <strong>Ground Water Loop</strong>
+                    <span>42 L Daily • Pump Standby</span>
                   </div>
                 </div>
+              </div>
+
+              <!-- Orbit Interaction Help Hint -->
+              <div class="orbit-interaction-hint">
+                <span>🖱️ Click & Drag to Rotate 360° • Scroll to Zoom In/Out</span>
               </div>
 
               <!-- Floating Hotspot Detail HUD -->
@@ -457,11 +467,6 @@
                         <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                       </svg>
                     </button>
-                    <button class="mini-action-btn" title="Filter Options">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                      </svg>
-                    </button>
                   </div>
                 </div>
 
@@ -497,7 +502,7 @@
                 </div>
               </div>
 
-              <!-- Bottom Card 3: Active Intelligence & Anomaly Alerts -->
+              <!-- Bottom Card 3: Active Alerts & Anomalies -->
               <div class="glass-card alerts-card">
                 <div id="alerts-list-mount" class="alerts-stack">
                   <!-- Alert 1: Warning -->
