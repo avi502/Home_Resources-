@@ -304,13 +304,7 @@
               
               <!-- Top Camera & View Controls -->
               <div class="three-controls-bar">
-                <!-- 3D Model Switcher -->
-                <div class="model-mode-switch-group">
-                  <button class="model-mode-btn active" id="btn-mode-sketchfab" title="View 3D Model from https://skfb.ly/pHACY">🏙️ Sketchfab Model</button>
-                  <button class="model-mode-btn" id="btn-mode-three" title="View Interactive Eco-Home Architecture">🏡 Three.js Eco-Home</button>
-                </div>
-
-                <div class="camera-preset-group" id="three-preset-controls" style="display: none;">
+                <div class="camera-preset-group" id="three-preset-controls">
                   <button class="cam-preset-btn active" data-focus="overview">Whole House</button>
                   <button class="cam-preset-btn" data-focus="solar">Solar Roof</button>
                   <button class="cam-preset-btn" data-focus="living">Living Room</button>
@@ -320,7 +314,7 @@
                   <button class="cam-preset-btn" data-focus="environment">Full Property</button>
                 </div>
 
-                <div class="scene-toggle-group" id="three-scene-toggles" style="display: none;">
+                <div class="scene-toggle-group" id="three-scene-toggles">
                   <button id="zoom-in-btn" class="cam-toggle-btn" title="Zoom In">
                     <strong>+</strong>
                   </button>
@@ -341,21 +335,7 @@
 
               <!-- Photorealistic Interactive 3D Architectural Stage -->
               <div id="three-home-stage" class="three-home-stage">
-                <!-- 1. Sketchfab 3D Model Player (https://skfb.ly/pHACY) -->
-                <iframe 
-                  id="sketchfab-model-frame"
-                  class="sketchfab-embed-frame"
-                  title="Realistic 3D Model (Sketchfab https://skfb.ly/pHACY)"
-                  src="https://sketchfab.com/models/b3dcef1c31e04dcd883f682f21617381/embed?autostart=1&internal=1&tracking=0&ui_infos=0&ui_watermark=0&ui_help=0&ui_settings=0&ui_inspector=0&ui_annotations=0&ui_stop=0&ui_vr=0&preload=1&ui_theme=dark"
-                  frameborder="0"
-                  allowfullscreen
-                  mozallowfullscreen="true"
-                  webkitallowfullscreen="true"
-                  allow="autoplay; fullscreen; xr-spatial-tracking"
-                ></iframe>
-
-                <!-- 2. Three.js Procedural Eco-Home Container -->
-                <div id="three-webgl-mount" style="display: none; width: 100%; height: 100%;"></div>
+                <!-- Mounted dynamically by smartHome3D.js -->
               </div>
 
               <!-- Helpful Mouse Hint -->

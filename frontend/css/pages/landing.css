@@ -284,34 +284,195 @@ body.landing-page-body {
   font-size: 0.8rem;
 }
 
-/* HERO IMAGE STAGE WITH GLOWING RESOURCE BADGES */
-.hero-visual-frame {
+/* HERO LIVING SVG STAGE */
+.hero-svg-stage-box {
   position: relative;
   width: 100%;
-  border-radius: 20px;
+  border-radius: 22px;
+  background: radial-gradient(circle at 50% 50%, rgba(13, 38, 46, 0.75) 0%, rgba(8, 20, 24, 0.95) 100%);
+  border: 1px solid rgba(45, 212, 191, 0.22);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 50px rgba(45, 212, 191, 0.12);
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(45, 212, 191, 0.1);
-  border: 1px solid rgba(45, 212, 191, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.hero-main-img {
+.hero-svg-stage-box:hover {
+  border-color: rgba(45, 212, 191, 0.4);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.75), 0 0 60px rgba(45, 212, 191, 0.2);
+}
+
+.hero-living-svg {
   width: 100%;
   height: auto;
   display: block;
-  object-fit: cover;
+  user-select: none;
 }
 
-/* Floating annotation badge */
-.handwritten-callout {
-  position: absolute;
-  top: 18px;
-  right: 28px;
-  font-family: 'Caveat', cursive, sans-serif;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1.4rem;
-  transform: rotate(4deg);
-  pointer-events: none;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+/* Conduit Lines & Dash flow */
+.stream-line {
+  fill: none;
+  stroke-dasharray: 8, 12;
+  animation: streamDashFlow 2.4s linear infinite;
+  transition: stroke-width 0.3s ease, filter 0.3s ease;
+}
+
+.stream-elec {
+  stroke: #fbbf24;
+  stroke-width: 2.2;
+}
+
+.stream-water {
+  stroke: #38bdf8;
+  stroke-width: 2.2;
+}
+
+.stream-food {
+  stroke: #34d399;
+  stroke-width: 2.2;
+}
+
+.stream-money {
+  stroke: #2dd4bf;
+  stroke-width: 2.2;
+}
+
+.stream-time {
+  stroke: #a78bfa;
+  stroke-width: 2.2;
+}
+
+@keyframes streamDashFlow {
+  from {
+    stroke-dashoffset: 40;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Interactive SVG Resource Badges */
+.svg-badge {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.28s ease;
+  cursor: pointer;
+}
+
+.svg-badge:hover {
+  transform: translateY(-5px) scale(1.03);
+}
+
+.svg-badge.badge-elec:hover {
+  filter: drop-shadow(0 6px 16px rgba(251, 191, 36, 0.55));
+}
+
+.svg-badge.badge-water:hover {
+  filter: drop-shadow(0 6px 16px rgba(56, 189, 248, 0.55));
+}
+
+.svg-badge.badge-food:hover {
+  filter: drop-shadow(0 6px 16px rgba(52, 211, 153, 0.55));
+}
+
+.svg-badge.badge-money:hover {
+  filter: drop-shadow(0 6px 16px rgba(45, 212, 191, 0.55));
+}
+
+.svg-badge.badge-time:hover {
+  filter: drop-shadow(0 6px 16px rgba(167, 139, 250, 0.55));
+}
+
+/* Floating Badges Animation */
+.badge-float-1 {
+  animation: badgeFloatAnim 4.2s ease-in-out infinite;
+}
+.badge-float-2 {
+  animation: badgeFloatAnim 4.8s ease-in-out 0.8s infinite;
+}
+.badge-float-3 {
+  animation: badgeFloatAnim 4.4s ease-in-out 1.5s infinite;
+}
+.badge-float-4 {
+  animation: badgeFloatAnim 5.2s ease-in-out 2.2s infinite;
+}
+.badge-float-5 {
+  animation: badgeFloatAnim 4.6s ease-in-out 1.1s infinite;
+}
+
+@keyframes badgeFloatAnim {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Beacon Radar Ring Pulse */
+.radar-ring-1 {
+  animation: radarRingAnim 3s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+.radar-ring-2 {
+  animation: radarRingAnim 3s cubic-bezier(0.2, 0.8, 0.2, 1) 1.2s infinite;
+}
+
+@keyframes radarRingAnim {
+  0% {
+    r: 4;
+    opacity: 0.9;
+    stroke-width: 2;
+  }
+  100% {
+    r: 32;
+    opacity: 0;
+    stroke-width: 0.5;
+  }
+}
+
+/* Battery LED pulsing */
+.battery-led-bar {
+  animation: batteryBarPulse 1.8s ease-in-out infinite;
+}
+.battery-led-bar:nth-child(1) { animation-delay: 0s; }
+.battery-led-bar:nth-child(2) { animation-delay: 0.3s; }
+.battery-led-bar:nth-child(3) { animation-delay: 0.6s; }
+.battery-led-bar:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes batteryBarPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; filter: drop-shadow(0 0 6px #10b981); }
+}
+
+/* Solar Roof Shimmer */
+.solar-shimmer {
+  animation: solarShimmerMove 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes solarShimmerMove {
+  0% { opacity: 0.15; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.2; }
+}
+
+/* Water Ripple inside Cistern */
+.cistern-wave {
+  animation: waveSlosh 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes waveSlosh {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(3px); }
+}
+
+/* Warm Interior Window Glow */
+.warm-interior-glow {
+  animation: warmInteriorPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes warmInteriorPulse {
+  0% { opacity: 0.35; }
+  100% { opacity: 0.75; }
 }
 
 /* BOTTOM RESOURCE DASHBOARD RIBBON */
@@ -723,6 +884,52 @@ body.landing-page-body {
 .btn-demo-guest:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Modal Eco Banner & Pulse */
+.auth-eco-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(45, 212, 191, 0.08);
+  border: 1px solid rgba(45, 212, 191, 0.22);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1.1rem;
+}
+
+.auth-eco-svg {
+  flex-shrink: 0;
+}
+
+.auth-pulse-ring {
+  animation: modalPulseAnim 2.5s infinite;
+  transform-origin: center;
+}
+
+@keyframes modalPulseAnim {
+  0%, 100% {
+    r: 19;
+    opacity: 0.7;
+  }
+  50% {
+    r: 22;
+    opacity: 0.2;
+  }
+}
+
+.auth-eco-banner-title {
+  font-weight: 700;
+  color: #f1f5f9;
+  font-size: 0.88rem;
+  line-height: 1.2;
+}
+
+.auth-eco-banner-sub {
+  color: #94a3b8;
+  font-size: 0.76rem;
+  line-height: 1.3;
+  margin-top: 2px;
 }
 
 /* Responsive */

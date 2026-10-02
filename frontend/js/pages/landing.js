@@ -60,6 +60,16 @@ function setupAuthModal() {
     });
   }
 
+  // Hook up SVG Badges & Eco-Home clicks to open Signup Modal
+  document.querySelectorAll('[data-auth-trigger="signup"]').forEach((el) => {
+    el.addEventListener('click', () => openModal('signup'));
+  });
+
+  const svgHome = document.getElementById('svg-eco-home');
+  if (svgHome) {
+    svgHome.addEventListener('click', () => openModal('signup'));
+  }
+
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
   if (modal) {

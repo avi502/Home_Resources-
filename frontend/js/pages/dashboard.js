@@ -49,45 +49,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 // 1. Initialize Photorealistic 3D Eco-Smart Home Viewport
 function initSmartHome3D() {
   const stage = document.getElementById('three-home-stage');
-  const threeMount = document.getElementById('three-webgl-mount');
   if (!stage) return;
 
   try {
-    if (threeMount) {
-      smartHomeInstance = new SmartHome3D('three-webgl-mount');
-    }
-
-    // 3D Model Mode Switcher (Sketchfab vs Three.js)
-    const sketchBtn = document.getElementById('btn-mode-sketchfab');
-    const threeBtn = document.getElementById('btn-mode-three');
-    const sketchFrame = document.getElementById('sketchfab-model-frame');
-    const threePresetControls = document.getElementById('three-preset-controls');
-    const threeSceneToggles = document.getElementById('three-scene-toggles');
-
-    if (sketchBtn && threeBtn) {
-      sketchBtn.addEventListener('click', () => {
-        sketchBtn.classList.add('active');
-        threeBtn.classList.remove('active');
-        if (sketchFrame) sketchFrame.style.display = 'block';
-        if (threeMount) threeMount.style.display = 'none';
-        if (threePresetControls) threePresetControls.style.display = 'none';
-        if (threeSceneToggles) threeSceneToggles.style.display = 'none';
-      });
-
-      threeBtn.addEventListener('click', () => {
-        threeBtn.classList.add('active');
-        sketchBtn.classList.remove('active');
-        if (sketchFrame) sketchFrame.style.display = 'none';
-        if (threeMount) {
-          threeMount.style.display = 'block';
-          if (smartHomeInstance) {
-            setTimeout(() => smartHomeInstance.onResize(), 50);
-          }
-        }
-        if (threePresetControls) threePresetControls.style.display = 'flex';
-        if (threeSceneToggles) threeSceneToggles.style.display = 'flex';
-      });
-    }
+    smartHomeInstance = new SmartHome3D('three-home-stage');
 
     // Camera preset buttons
     const presetBtns = document.querySelectorAll('.cam-preset-btn');
