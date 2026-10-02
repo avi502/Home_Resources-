@@ -1,5 +1,5 @@
-// Shared Responsive Navbar Component
 import { storage } from '../utils/storage.js';
+import { getDemoToken } from '../api/client.js';
 
 export function renderNavbar(activePage = 'home') {
   const navContainer = document.getElementById('navbar-mount');
@@ -40,21 +40,13 @@ export function renderNavbar(activePage = 'home') {
 
   const authBtn = document.getElementById('auth-btn');
   if (authBtn) {
-    authBtn.addEventListener('click', () => {
+    authBtn.addEventListener('click', async () => {
       if (storage.isAuthenticated()) {
         storage.clear();
         window.location.reload();
       } else {
-        const loginModal = document.getElementById('login-modal');
-        if (loginModal) {
-          loginModal.classList.add('active');
-        } else {
-          // Quick demo login
-          storage.setToken('demo-token');
-          storage.setUser({ full_name: 'Alex Rivera', email: 'demo@homeresource.local' });
-          storage.setHouseholdId(1);
-          window.location.reload();
-        }
+        await getDemoToken();
+        window.location.reload();
       }
     });
   }

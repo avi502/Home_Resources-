@@ -22,6 +22,12 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
+    # Support instant local demo-token session
+    if cred.credentials == "demo-token":
+        demo_user = db.query(User).filter(User.email == "demo@homeresource.local").first()
+        if demo_user:
+            return demo_user
+
     payload = decode_access_token(cred.credentials)
     if not payload or "sub" not in payload:
         raise HTTPException(
