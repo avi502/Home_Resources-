@@ -3,156 +3,343 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomeResource — Household Resource Intelligence Platform</title>
-  <meta name="description" content="A secure, full-stack household resource intelligence platform modeling electricity, water, food, money, and time as an interconnected system.">
-  
-  <!-- CSS Stylesheets -->
+  <title>HomeResource — Turn Your Household Data Into Real Savings</title>
+  <meta name="description" content="HomeResource helps you understand and reduce waste across electricity, water, food, money and time — by finding hidden connections, spotting anomalies and showing you what to do next.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+
+  <!-- Google Fonts: Inter & Caveat for handwritten callout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Styles -->
   <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/layout.css">
-  <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/pages/landing.css">
-
-  <!-- Libraries: GSAP & Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
-<body>
-  <!-- Navbar Mount -->
-  <div id="navbar-mount"></div>
+<body class="landing-page-body">
 
-  <!-- Hero Section with Signature "Living Resource System" Animation -->
-  <section class="hero-section">
-    <!-- Interactive Canvas (Droplet -> Ripples -> 5 Interconnected Nodes -> Smart Home) -->
-    <canvas id="cinematic-canvas"></canvas>
-    <div class="hero-overlay"></div>
-
-    <div class="container hero-content">
-      <div class="hero-subtitle">
-        <span>●</span> The Living Resource System <span>●</span>
-      </div>
-      <h1 class="hero-title">
-        Household Intelligence,<br>Grounded in Physics.
-      </h1>
-      <p class="hero-description">
-        Electricity, water, food, money, and time are not isolated metrics. HomeResource analyzes their cross-system relationships, catches statistical anomalies with standardized deviations, and simulates what-if scenarios with transparent uncertainty bounds.
-      </p>
-
-      <div class="hero-cta-group">
-        <a href="/dashboard.html" class="btn btn-primary btn-lg">
-          Launch Live Dashboard
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
+  <!-- Top Sticky Navigation Bar -->
+  <header class="landing-navbar">
+    <div class="landing-nav-inner">
+      <a href="/" class="brand-link">
+        <div class="brand-icon-leaf">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+            <path d="M11 13v7"/>
           </svg>
-        </a>
-        <a href="/simulator.html" class="btn btn-secondary btn-lg">
-          Explore What-If Simulator
-        </a>
-      </div>
-    </div>
-
-    <!-- Cinematic Sequence Progress Controller (Blueprint Section 5.A) -->
-    <div class="cinematic-tracker">
-      <div class="scene-step active" data-scene="1">
-        <div class="scene-dot"></div>
-        <span>01 Drop Impact</span>
-      </div>
-      <div class="scene-step" data-scene="2">
-        <div class="scene-dot"></div>
-        <span>02 Resource Flows</span>
-      </div>
-      <div class="scene-step" data-scene="3">
-        <div class="scene-dot"></div>
-        <span>03 Intelligent Home</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bento Features Section -->
-  <section class="features-section container">
-    <div class="section-header">
-      <div class="section-tag">Interconnected Architecture</div>
-      <h2>Engineered for Verifiable Truth</h2>
-      <p>Every calculation is deterministic and mathematically transparent. We never fabricate savings or present statistical correlations as proven causation.</p>
-    </div>
-
-    <div class="grid-3">
-      <!-- Card 1: Standardized Deviations -->
-      <div class="glass-panel feature-bento-card">
-        <div>
-          <div class="feature-icon-wrapper">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-            </svg>
-          </div>
-          <h3>Standardized Anomaly Detection</h3>
-          <p style="margin-top: 0.5rem; font-size: 0.95rem;">
-            Calculates rigorous z-scores <span style="font-family: var(--font-mono); color: var(--color-amber);">(z = [x - μ] / σ)</span> against 14-day rolling baselines to detect genuine usage spikes without false positives.
-          </p>
         </div>
-        <div style="margin-top: 1.5rem;">
-          <span class="badge badge-emerald">Evidence Based</span>
-        </div>
-      </div>
-
-      <!-- Card 2: Interconnected Graph -->
-      <div class="glass-panel feature-bento-card">
-        <div>
-          <div class="feature-icon-wrapper" style="color: var(--color-amber); border-color: rgba(217, 168, 91, 0.4);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="18" cy="5" r="3"/>
-              <circle cx="6" cy="12" r="3"/>
-              <circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-            </svg>
-          </div>
-          <h3>Cascading Resource Graph</h3>
-          <p style="margin-top: 0.5rem; font-size: 0.95rem;">
-            Models hydrodynamic well & booster pump power, correlating domestic flow with kilowatt-hour demand, while preserving non-causal safeguards.
-          </p>
-        </div>
-        <div style="margin-top: 1.5rem;">
-          <span class="badge badge-amber">Causation Safeguards</span>
-        </div>
-      </div>
-
-      <!-- Card 3: What-If Simulation -->
-      <div class="glass-panel feature-bento-card">
-        <div>
-          <div class="feature-icon-wrapper">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
-          </div>
-          <h3>What-If Sensitivity Simulation</h3>
-          <p style="margin-top: 0.5rem; font-size: 0.95rem;">
-            Test conservation policies before implementation. Every forecast computes conservative lower and upper bounds with explicit confidence intervals.
-          </p>
-        </div>
-        <div style="margin-top: 1.5rem;">
-          <span class="badge badge-emerald">Uncertainty Bounds</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container footer-content">
-      <div class="logo-brand">
-        <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
         <span>HomeResource</span>
-      </div>
-      <div class="footer-credits">
-        Built in accordance with the Master AI Development Instructions. Open Source & Production Ready.
+      </a>
+
+      <nav>
+        <ul class="landing-nav-links">
+          <li><a href="/" class="landing-nav-item active">Home</a></li>
+          <li><a href="/dashboard.html" class="landing-nav-item">Dashboard</a></li>
+          <li><a href="/dashboard.html#insights" class="landing-nav-item">Insights</a></li>
+          <li><a href="/simulator.html" class="landing-nav-item">Simulator</a></li>
+          <li><a href="/dashboard.html#history" class="landing-nav-item">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="landing-nav-actions">
+        <button class="theme-btn" id="theme-toggle-btn" title="Toggle Lighting Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="btn-pill-login" id="nav-login-btn">Login</button>
+        <button class="btn-pill-primary" id="nav-signup-btn">Get Started</button>
       </div>
     </div>
-  </footer>
+  </header>
 
-  <!-- Scripts -->
+  <!-- Main Hero Section (Exact Match to Reference Layout) -->
+  <main class="landing-hero-section">
+    <div class="hero-showcase-grid">
+      
+      <!-- Left Column: Copy & Calls to Action -->
+      <div class="hero-text-column">
+        <span class="hero-tagline-pill">Smarter Homes &middot; Less Waste &middot; A Brighter Future</span>
+        <h1 class="hero-main-title">
+          Turn Your Household Data Into Real <span class="hero-savings-green">Savings</span>
+        </h1>
+        <p class="hero-body-desc">
+          HomeResource helps you understand and reduce waste across electricity, water, food, money and time &mdash; by finding hidden connections, spotting anomalies and showing you what to do next.
+        </p>
+
+        <div class="hero-buttons-row">
+          <button class="btn-hero-cta" id="hero-start-btn">
+            <span>Start Now</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <button class="btn-hero-watch" id="hero-watch-btn">
+            <span class="watch-play-icon">&#9658;</span>
+            <span>Watch How It Works</span>
+            <span class="watch-time-tag">1:12</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Signature Photographic Visual with Connected Energy Conduits -->
+      <div class="hero-visual-column">
+        <div class="hero-visual-frame">
+          <img src="/assets/images/hero_home_savings.jpg" alt="HomeResource Smart Connected Eco Home" class="hero-main-img">
+          
+          <!-- Handwritten Annotation -->
+          <div class="handwritten-callout">
+            Small changes.<br>&nbsp;&nbsp;Big impact.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Resource Dashboard Ribbon (As shown in Reference UI) -->
+  <section class="bottom-ribbon-section">
+    <div class="ribbon-grid">
+      
+      <!-- Card 1: Your Resources with Mini Cards & Live Sparklines -->
+      <div class="ribbon-card">
+        <div class="ribbon-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+          </svg>
+          <span>Your Resources</span>
+        </div>
+
+        <div class="mini-resources-grid">
+          <!-- Electricity -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>⚡</span>
+              <span>Electricity</span>
+            </div>
+            <div class="chip-val">18.4 <span style="font-size: 0.72rem; color: #94a3b8;">kWh</span></div>
+            <div class="chip-delta delta-down">&darr; 8%</div>
+            <!-- SVG Sparkline -->
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,15 Q20,18 35,8 T80,12" fill="none" stroke="#fbbf24" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Water -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>💧</span>
+              <span>Water</span>
+            </div>
+            <div class="chip-val">328 <span style="font-size: 0.72rem; color: #94a3b8;">L</span></div>
+            <div class="chip-delta delta-down">&darr; 12%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,8 Q25,18 45,6 T80,10" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Food -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>🍽️</span>
+              <span>Food</span>
+            </div>
+            <div class="chip-val">2.3 <span style="font-size: 0.72rem; color: #94a3b8;">kg</span></div>
+            <div class="chip-delta delta-down">&darr; 15%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,16 Q20,6 40,14 T80,7" fill="none" stroke="#34d399" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Money -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>🪙</span>
+              <span>Money</span>
+            </div>
+            <div class="chip-val">$42.80</div>
+            <div class="chip-delta delta-down">&darr; 10%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,12 Q20,16 45,5 T80,11" fill="none" stroke="#eab308" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- Time -->
+          <div class="mini-resource-chip">
+            <div class="chip-header">
+              <span>⏱️</span>
+              <span>Time</span>
+            </div>
+            <div class="chip-val">3.2 <span style="font-size: 0.72rem; color: #94a3b8;">hrs</span></div>
+            <div class="chip-delta delta-down">&darr; 7%</div>
+            <svg class="mini-sparkline" viewBox="0 0 80 20">
+              <path d="M0,14 Q30,5 50,15 T80,8" fill="none" stroke="#2dd4bf" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Recent Insight -->
+      <div class="insight-ribbon-card">
+        <div>
+          <div class="ribbon-card-header" style="color: #fbbf24;">
+            <span>💡</span>
+            <span>Recent Insight</span>
+          </div>
+
+          <div class="insight-top-row">
+            <div class="insight-warn-icon">⚠️</div>
+            <div>
+              <div class="insight-title">Higher electricity usage detected</div>
+              <p class="insight-desc">
+                Today's usage is 62% higher than your normal pattern. Likely related to increased water pump activity.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <a href="/dashboard.html" class="insight-btn">View Details &rarr;</a>
+      </div>
+
+      <!-- Card 3: Quick Actions -->
+      <div class="quick-actions-card">
+        <div class="ribbon-card-header">
+          <span>⚡</span>
+          <span>Quick Actions</span>
+        </div>
+
+        <a href="/simulator.html" class="qa-link-btn">
+          <div class="qa-left-info">
+            <span>⚛</span>
+            <span>Run What-If Simulation</span>
+          </div>
+          <span>&rarr;</span>
+        </a>
+
+        <a href="/dashboard.html" class="qa-link-btn">
+          <div class="qa-left-info">
+            <span>📈</span>
+            <span>View Resource Graph</span>
+          </div>
+          <span>&rarr;</span>
+        </a>
+
+        <a href="/dashboard.html" class="qa-link-btn">
+          <div class="qa-left-info">
+            <span>📑</span>
+            <span>Explore Historical Data</span>
+          </div>
+          <span>&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Status Sub-bar -->
+    <div class="ribbon-bottom-status">
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <span style="color: #2dd4bf;">🌱</span>
+        <span>Real data. Smarter decisions.</span>
+      </div>
+
+      <div class="legend-dots">
+        <div class="dot-item"><span class="dot dot-elec"></span><span>Electricity</span></div>
+        <div class="dot-item"><span class="dot dot-water"></span><span>Water</span></div>
+        <div class="dot-item"><span class="dot dot-food"></span><span>Food</span></div>
+        <div class="dot-item"><span class="dot dot-money"></span><span>Money</span></div>
+        <div class="dot-item"><span class="dot dot-time"></span><span>Time</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Sign Up & Login Modal -->
+  <div class="auth-modal-overlay" id="auth-modal">
+    <div class="auth-modal-card">
+      <div class="auth-modal-header">
+        <div class="auth-brand-badge">
+          <div class="brand-icon-leaf" style="width: 28px; height: 28px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 11 3s7 4 7 10a7 7 0 0 1-7 7Z"/>
+            </svg>
+          </div>
+          <span>HomeResource</span>
+        </div>
+        <button class="auth-close-btn" id="auth-close-btn">&times;</button>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="auth-tabs-row">
+        <button class="auth-tab-btn active" id="tab-signup-btn">Create Account</button>
+        <button class="auth-tab-btn" id="tab-login-btn">Sign In</button>
+      </div>
+
+      <div class="auth-modal-body">
+        <!-- Error/Status Message -->
+        <div id="auth-error-msg" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 8px; padding: 0.6rem; font-size: 0.85rem; margin-bottom: 1rem;"></div>
+
+        <!-- 1-Click Instant Guest Demo Button -->
+        <button class="btn-demo-guest" id="guest-demo-btn">
+          <span>⚡</span>
+          <span>Continue as Guest (Instant Demo Access)</span>
+        </button>
+
+        <div class="auth-divider">or enter details</div>
+
+        <!-- Sign Up Form -->
+        <form id="signup-form">
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="auth-form-input" placeholder="e.g. Alex Morgan" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" class="auth-form-input" placeholder="alex@example.com" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-password">Password</label>
+            <input type="password" id="signup-password" class="auth-form-input" placeholder="At least 6 characters" minlength="6" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="signup-household">Household Name</label>
+            <input type="text" id="signup-household" class="auth-form-input" placeholder="e.g. Green Haven Villa" value="Green Haven Villa">
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="signup-submit-btn">Get Started &mdash; Free</button>
+        </form>
+
+        <!-- Login Form (Initially Hidden) -->
+        <form id="login-form" style="display: none;">
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="auth-form-input" placeholder="demo@homeresource.io" value="demo@homeresource.io" required>
+          </div>
+
+          <div class="auth-form-group">
+            <label class="auth-form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="auth-form-input" placeholder="••••••••" value="demo1234" required>
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="login-submit-btn">Sign In to Dashboard</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Modules -->
   <script type="module" src="/js/pages/landing.js"></script>
 </body>
 </html>

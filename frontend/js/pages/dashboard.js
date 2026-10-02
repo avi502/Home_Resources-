@@ -49,10 +49,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 // 1. Initialize Photorealistic 3D Eco-Smart Home Viewport
 function initSmartHome3D() {
   const stage = document.getElementById('three-home-stage');
+  const threeMount = document.getElementById('three-webgl-mount');
   if (!stage) return;
 
   try {
-    smartHomeInstance = new SmartHome3D('three-home-stage');
+    if (threeMount) {
+      smartHomeInstance = new SmartHome3D('three-webgl-mount');
+    }
+
+    // 3D Model Mode Switcher (Sketchfab vs Three.js)
+    const sketchBtn = document.getElementById('btn-mode-sketchfab');
+    const threeBtn = document.getElementById('btn-mode-three');
+    const sketchFrame = document.getElementById('sketchfab-model-frame');
+    const threePresetControls = document.getElementById('three-preset-controls');
+    const threeSceneToggles = document.getElementById('three-scene-toggles');
+
+    if (sketchBtn && threeBtn) {
+      sketchBtn.addEventListener('click', () => {
+        sketchBtn.classList.add('active');
+        threeBtn.classList.remove('active');
+        if (sketchFrame) sketchFrame.style.display = 'block';
+        if (threeMount) threeMount.style.display = 'none';
+        if (threePresetControls) threePresetControls.style.display = 'none';
+        if (threeSceneToggles) threeSceneToggles.style.display = 'none';
+      });
+
+      threeBtn.addEventListener('click', () => {
+        threeBtn.classList.add('active');
+        sketchBtn.classList.remove('active');
+        if (sketchFrame) sketchFrame.style.display = 'none';
+        if (threeMount) {
+          threeMount.style.display = 'block';
+          if (smartHomeInstance) {
+            setTimeout(() => smartHomeInstance.onResize(), 50);
+          }
+        }
+        if (threePresetControls) threePresetControls.style.display = 'flex';
+        if (threeSceneToggles) threeSceneToggles.style.display = 'flex';
+      });
+    }
 
     // Camera preset buttons
     const presetBtns = document.querySelectorAll('.cam-preset-btn');
@@ -563,10 +598,23 @@ function setupAddEntryForm() {
 
   const defaultUnits = {
     electricity: 'kWh',
-    water: 'Liters',
+    water: 'L',
     food: 'kg',
     money: 'USD',
-    time: 'Hours'
+    time: 'hrs'
+  };
+
+  const unitAliases = {
+    'liters': 'L',
+    'liter': 'L',
+    'l': 'L',
+    'hours': 'hrs',
+    'hour': 'hrs',
+    'hrs': 'hrs',
+    'hr': 'hrs',
+    'kwh': 'kWh',
+    'kg': 'kg',
+    'usd': 'USD'
   };
 
   if (typeSelect && unitInput) {
@@ -577,10 +625,13 @@ function setupAddEntryForm() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const rawUnit = unitInput.value.trim();
+    const cleanUnit = unitAliases[rawUnit.toLowerCase()] || rawUnit;
+
     const payload = {
       resource_type: typeSelect.value,
       amount: parseFloat(document.getElementById('form-amount').value),
-      unit: unitInput.value,
+      unit: cleanUnit,
       cost: parseFloat(document.getElementById('form-cost').value || '0'),
       activity_tag: document.getElementById('form-activity').value || 'general',
       notes: document.getElementById('form-notes').value || '',

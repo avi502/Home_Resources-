@@ -13,6 +13,44 @@ VALID_UNITS = {
 }
 
 
+UNIT_ALIASES = {
+    "liters": "L",
+    "liter": "L",
+    "l": "L",
+    "gallons": "gal",
+    "gallon": "gal",
+    "gal": "gal",
+    "m3": "m3",
+    "kwh": "kWh",
+    "wh": "Wh",
+    "kg": "kg",
+    "kilograms": "kg",
+    "kilogram": "kg",
+    "grams": "g",
+    "gram": "g",
+    "g": "g",
+    "items": "items",
+    "item": "items",
+    "hours": "hrs",
+    "hour": "hrs",
+    "hrs": "hrs",
+    "hr": "hrs",
+    "minutes": "mins",
+    "minute": "mins",
+    "mins": "mins",
+    "min": "mins",
+    "usd": "USD",
+    "dollars": "USD",
+    "dollar": "USD",
+    "$": "USD",
+    "eur": "EUR",
+    "gbp": "GBP",
+    "inr": "INR",
+    "cad": "CAD",
+    "aud": "AUD"
+}
+
+
 class ResourceEntryCreate(BaseModel):
     resource_type: str = Field(..., description="electricity, water, food, money, or time")
     amount: float = Field(..., gt=0, description="Amount consumed/used")
@@ -35,10 +73,11 @@ class ResourceEntryCreate(BaseModel):
     @classmethod
     def validate_unit(cls, v: str) -> str:
         clean = v.strip()
+        clean_norm = UNIT_ALIASES.get(clean.lower(), clean)
         all_valid = {u for units in VALID_UNITS.values() for u in units}
-        if clean not in all_valid:
+        if clean_norm not in all_valid:
             raise ValueError(f"Invalid unit: '{v}'. Must be an explicit standard unit (e.g. kWh, L, kg, hrs, USD)")
-        return clean
+        return clean_norm
 
 
 class ResourceEntryUpdate(BaseModel):
