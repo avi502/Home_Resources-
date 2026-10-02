@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeResource — Household Resource Intelligence Platform</title>
+  <meta name="description" content="A secure, full-stack household resource intelligence platform modeling electricity, water, food, money, and time as an interconnected system.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/landing.css">
+
+  <!-- Libraries: GSAP & Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+  <!-- Navbar Mount -->
+  <div id="navbar-mount"></div>
+
+  <!-- Hero Section with Signature "Living Resource System" Animation -->
+  <section class="hero-section">
+    <!-- Interactive Canvas (Droplet -> Ripples -> 5 Interconnected Nodes -> Smart Home) -->
+    <canvas id="cinematic-canvas"></canvas>
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
+      <div class="hero-subtitle">
+        <span>●</span> The Living Resource System <span>●</span>
+      </div>
+      <h1 class="hero-title">
+        Household Intelligence,<br>Grounded in Physics.
+      </h1>
+      <p class="hero-description">
+        Electricity, water, food, money, and time are not isolated metrics. HomeResource analyzes their cross-system relationships, catches statistical anomalies with standardized deviations, and simulates what-if scenarios with transparent uncertainty bounds.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="/dashboard.html" class="btn btn-primary btn-lg">
+          Launch Live Dashboard
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="/simulator.html" class="btn btn-secondary btn-lg">
+          Explore What-If Simulator
+        </a>
+      </div>
+    </div>
+
+    <!-- Cinematic Sequence Progress Controller (Blueprint Section 5.A) -->
+    <div class="cinematic-tracker">
+      <div class="scene-step active" data-scene="1">
+        <div class="scene-dot"></div>
+        <span>01 Drop Impact</span>
+      </div>
+      <div class="scene-step" data-scene="2">
+        <div class="scene-dot"></div>
+        <span>02 Resource Flows</span>
+      </div>
+      <div class="scene-step" data-scene="3">
+        <div class="scene-dot"></div>
+        <span>03 Intelligent Home</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Features Section -->
+  <section class="features-section container">
+    <div class="section-header">
+      <div class="section-tag">Interconnected Architecture</div>
+      <h2>Engineered for Verifiable Truth</h2>
+      <p>Every calculation is deterministic and mathematically transparent. We never fabricate savings or present statistical correlations as proven causation.</p>
+    </div>
+
+    <div class="grid-3">
+      <!-- Card 1: Standardized Deviations -->
+      <div class="glass-panel feature-bento-card">
+        <div>
+          <div class="feature-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
+          <h3>Standardized Anomaly Detection</h3>
+          <p style="margin-top: 0.5rem; font-size: 0.95rem;">
+            Calculates rigorous z-scores <span style="font-family: var(--font-mono); color: var(--color-amber);">(z = [x - μ] / σ)</span> against 14-day rolling baselines to detect genuine usage spikes without false positives.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <span class="badge badge-emerald">Evidence Based</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Interconnected Graph -->
+      <div class="glass-panel feature-bento-card">
+        <div>
+          <div class="feature-icon-wrapper" style="color: var(--color-amber); border-color: rgba(217, 168, 91, 0.4);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </div>
+          <h3>Cascading Resource Graph</h3>
+          <p style="margin-top: 0.5rem; font-size: 0.95rem;">
+            Models hydrodynamic well & booster pump power, correlating domestic flow with kilowatt-hour demand, while preserving non-causal safeguards.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <span class="badge badge-amber">Causation Safeguards</span>
+        </div>
+      </div>
+
+      <!-- Card 3: What-If Simulation -->
+      <div class="glass-panel feature-bento-card">
+        <div>
+          <div class="feature-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <h3>What-If Sensitivity Simulation</h3>
+          <p style="margin-top: 0.5rem; font-size: 0.95rem;">
+            Test conservation policies before implementation. Every forecast computes conservative lower and upper bounds with explicit confidence intervals.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <span class="badge badge-emerald">Uncertainty Bounds</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="logo-brand">
+        <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
+        <span>HomeResource</span>
+      </div>
+      <div class="footer-credits">
+        Built in accordance with the Master AI Development Instructions. Open Source & Production Ready.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/pages/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What-If Simulator — HomeResource</title>
+
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/simulator.css">
+</head>
+<body>
+  <div id="navbar-mount"></div>
+
+  <main class="main-content container-wide">
+    <div class="dashboard-header">
+      <div>
+        <h1>What-If Simulation Engine</h1>
+        <p>Hypothetical household resource scenarios with thermodynamic cascading and empirical uncertainty bounds.</p>
+      </div>
+      <span class="badge badge-emerald">Deterministic Engine</span>
+    </div>
+
+    <div class="simulator-layout">
+      <!-- Control Panel -->
+      <div class="glass-panel simulator-control-panel">
+        <h3 style="margin-bottom: var(--space-md);">Curated Scenario Presets</h3>
+        <div id="presets-list" class="presets-container">
+          <!-- Injected dynamically via simulator.js -->
+        </div>
+
+        <h3 style="margin-bottom: var(--space-md);">Custom Parameter Tuning</h3>
+        <div class="form-group">
+          <label class="form-label" for="target-resource-select">Target Resource</label>
+          <select id="target-resource-select" class="form-control">
+            <option value="water">Water (L)</option>
+            <option value="electricity">Electricity (kWh)</option>
+            <option value="food">Food (kg)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" style="margin-bottom: 0;">Target Usage Adjustment</label>
+            <span id="slider-val-badge" class="slider-val-badge">-15%</span>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="change-slider" class="slider-input" min="-80" max="80" step="5" value="-15">
+          </div>
+        </div>
+
+        <!-- Water Pump Interconnection Options -->
+        <div id="pump-options-group" style="margin-top: var(--space-lg); padding: var(--space-md); background: rgba(11, 20, 18, 0.5); border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <input type="checkbox" id="water-pump-toggle" checked style="accent-color: var(--color-amber); width: 18px; height: 18px; cursor: pointer;">
+            <label for="water-pump-toggle" style="cursor: pointer; font-size: 0.9rem; font-weight: 500;">
+              Couple Well / Booster Pump Power Load
+            </label>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.4rem;">
+            Models hydrodynamic well & booster motor power (0.0012 kWh/L). Reduces electrical load when water flow drops.
+          </p>
+        </div>
+      </div>
+
+      <!-- Results Display Panel -->
+      <div class="glass-panel simulator-results-panel">
+        <!-- Savings Callout -->
+        <div class="savings-highlight-card">
+          <div id="savings-direction-label" class="savings-label">Estimated Monthly Savings</div>
+          <div id="expected-savings-display" class="savings-amount">$0.00</div>
+          <div id="usage-delta-display" style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--color-text-secondary); display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <!-- Usage details -->
+          </div>
+        </div>
+
+        <!-- Uncertainty Interval Bounds (Blueprint Section 6) -->
+        <div class="uncertainty-box">
+          <div class="uncertainty-header">
+            <strong>Estimated Uncertainty Interval</strong>
+            <span id="unc-confidence-badge" class="badge badge-amber">80% confidence interval</span>
+          </div>
+          <div class="uncertainty-range-bar">
+            <div class="range-point">
+              <div class="range-label">Conservative (Min)</div>
+              <div id="unc-min" style="color: var(--color-text-muted);">$0.00</div>
+            </div>
+            <div style="color: var(--color-amber); font-size: 1.2rem;">➔</div>
+            <div class="range-point">
+              <div class="range-label">Expected (Mean)</div>
+              <div id="unc-exp" style="color: var(--color-emerald-bright); font-weight: 700;">$0.00</div>
+            </div>
+            <div style="color: var(--color-amber); font-size: 1.2rem;">➔</div>
+            <div class="range-point">
+              <div class="range-label">Optimistic (Max)</div>
+              <div id="unc-max" style="color: var(--color-text-primary);">$0.00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cascading Cross-Resource Impacts -->
+        <div>
+          <h4 style="margin-bottom: var(--space-xs);">Interconnected Cascading Impacts</h4>
+          <p style="font-size: 0.8rem; color: var(--color-text-muted);">Physical secondary interactions across subsystems</p>
+          <div id="cascading-mount">
+            <!-- Cascading items injected -->
+          </div>
+        </div>
+
+        <!-- Assumptions List -->
+        <div>
+          <h4 style="margin-bottom: var(--space-xs);">Explicit Assumptions</h4>
+          <ul id="assumptions-mount" class="assumptions-list">
+            <!-- Assumptions injected -->
+          </ul>
+        </div>
+
+        <!-- Calculation Methodology -->
+        <div style="background: rgba(8, 15, 13, 0.6); padding: var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: 0.825rem; color: var(--color-text-muted);">
+          <strong style="color: var(--color-text-secondary); display: block; margin-bottom: 0.25rem;">Deterministic Mathematical Methodology:</strong>
+          <span id="methodology-display">Loading methodology...</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/js/pages/simulator.js"></script>
+</body>
+</html>
