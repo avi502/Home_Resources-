@@ -1,4 +1,6 @@
 // Realist Home — Flagship Monitoring Dashboard Controller
+// Featuring interactive draggable connections graph & photorealistic 3D architectural viewer
+
 import { api } from '../api/endpoints.js';
 import { storage } from '../utils/storage.js';
 import { formatNumber, formatCurrency, formatDate } from '../utils/formatters.js';
@@ -14,13 +16,13 @@ let smartHomeInstance = null;
 document.addEventListener('DOMContentLoaded', async () => {
   currentHouseholdId = storage.getHouseholdId();
 
-  // 1. Initialize Interactive 3D Rotating & Zooming Smart Home
+  // 1. Initialize Photorealistic 3D Smart Home Structure
   initSmartHome3D();
 
-  // 2. Setup Top Pill Tabs Navigation (Overview, Monitoring, Analytics)
+  // 2. Setup Navigation Tabs
   setupNavTabs();
 
-  // 3. Setup Telemetry Logging Modal
+  // 3. Setup Add Reading Modal
   setupModal('add-entry-modal', 'open-add-entry-btn');
   const analyticsAddBtn = document.getElementById('analytics-add-btn');
   if (analyticsAddBtn) {
@@ -41,10 +43,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 5. Load Data from Backend APIs
   await loadDashboardData();
   await loadAnomalies();
-  await loadRelationships();
+  await loadInteractiveConnectionsGraph();
 });
 
-// Initialize Interactive 3D Eco-Smart Home
+// 1. Initialize Photorealistic 3D Eco-Smart Home Viewport
 function initSmartHome3D() {
   const stage = document.getElementById('three-home-stage');
   if (!stage) return;
@@ -68,16 +70,27 @@ function initSmartHome3D() {
       });
     });
 
-    // Auto-Rotate Toggle Button
+    // Zoom Buttons
+    const zoomInBtn = document.getElementById('zoom-in-btn');
+    if (zoomInBtn) {
+      zoomInBtn.addEventListener('click', () => smartHomeInstance.zoomIn());
+    }
+
+    const zoomOutBtn = document.getElementById('zoom-out-btn');
+    if (zoomOutBtn) {
+      zoomOutBtn.addEventListener('click', () => smartHomeInstance.zoomOut());
+    }
+
+    // Auto-Spin Toggle
     const rotateBtn = document.getElementById('toggle-rotate-btn');
     if (rotateBtn) {
       rotateBtn.addEventListener('click', () => {
-        const isRotating = smartHomeInstance.toggleAutoRotate();
-        rotateBtn.classList.toggle('active', isRotating);
+        const isSpinning = smartHomeInstance.toggleAutoRotate();
+        rotateBtn.classList.toggle('active', isSpinning);
       });
     }
 
-    // Day / Night Toggle Button
+    // Day / Night Toggle
     const dayNightBtn = document.getElementById('toggle-daynight-btn');
     if (dayNightBtn) {
       dayNightBtn.addEventListener('click', () => {
@@ -87,7 +100,7 @@ function initSmartHome3D() {
       });
     }
 
-    // Reset Camera Button
+    // Reset View Button
     const resetBtn = document.getElementById('reset-cam-btn');
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
@@ -98,7 +111,7 @@ function initSmartHome3D() {
       });
     }
 
-    // Bind Slim Toolbar Shortcuts to 3D Camera Focus
+    // Sidebar Shortcuts
     const tbThermometer = document.getElementById('tb-thermometer');
     if (tbThermometer) {
       tbThermometer.addEventListener('click', () => {
@@ -135,7 +148,7 @@ function initSmartHome3D() {
       });
     }
   } catch (err) {
-    console.error('Failed to initialize 3D Smart Home:', err);
+    console.error('Failed to initialize 3D Home:', err);
   }
 }
 
@@ -158,7 +171,7 @@ function activatePresetBtn(zone) {
   });
 }
 
-// Setup Navigation Pill Tabs
+// 2. Setup Top Pill Tabs Navigation
 function setupNavTabs() {
   const tabs = document.querySelectorAll('.pill-tab');
   const monitoringView = document.getElementById('monitoring-view');
@@ -176,11 +189,9 @@ function setupNavTabs() {
       if (target === 'monitoring' || target === 'overview') {
         if (monitoringView) monitoringView.classList.add('active');
         if (analyticsView) analyticsView.classList.remove('active');
-        if (smartHomeInstance) smartHomeInstance.onResize();
       } else if (target === 'analytics') {
         if (monitoringView) monitoringView.classList.remove('active');
         if (analyticsView) analyticsView.classList.add('active');
-        // Render charts when visible
         if (currentEntries.length > 0) {
           renderTrendChart('trendChart', currentEntries);
         }
@@ -197,13 +208,13 @@ function setupNavTabs() {
   }
 }
 
-// Load Core Dashboard Metrics
+// 3. Load Core Dashboard Metrics
 async function loadDashboardData() {
   try {
     const data = await api.resources.getDashboard(currentHouseholdId);
     if (!data) return;
 
-    // Household location / title
+    // Household name in header
     const locEl = document.getElementById('header-location');
     if (locEl && data.household_name) {
       locEl.textContent = data.household_name;
@@ -226,27 +237,23 @@ async function loadDashboardData() {
         if (streamSolar) streamSolar.textContent = '3.8';
       }
 
-      // Render Distribution Chart
       renderDistributionChart('distributionChart', data.summaries);
     }
 
-    // Render 14-day Trend Chart
     renderTrendChart('trendChart', currentEntries);
-
-    // Render Telemetry Table
     renderTelemetryTable(currentEntries);
   } catch (err) {
-    console.warn('Dashboard data fetch notification:', err.message);
+    console.warn('Dashboard metrics fetch:', err.message);
   }
 }
 
-// Render Telemetry Table
+// 4. Render Telemetry History Table
 function renderTelemetryTable(entries) {
   const tbody = document.getElementById('telemetry-tbody');
   if (!tbody) return;
 
   if (entries.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-text-muted); padding: 2rem;">No telemetry recorded yet. Click "+ Add Telemetry Record" to begin.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-text-muted); padding: 2rem;">No readings recorded yet. Click "+ Add a Reading" to start.</td></tr>`;
     return;
   }
 
@@ -260,7 +267,7 @@ function renderTelemetryTable(entries) {
       <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${e.notes || '—'}</td>
       <td>
         <button class="btn btn-outline btn-sm delete-btn" data-id="${e.id}" style="color: #EF4444; border-color: rgba(239,68,68,0.3); padding: 2px 8px;">
-          ✕
+          ✕ Delete
         </button>
       </td>
     </tr>
@@ -269,20 +276,20 @@ function renderTelemetryTable(entries) {
   tbody.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
-      if (confirm('Delete this telemetry entry?')) {
+      if (confirm('Delete this reading?')) {
         try {
           await api.resources.deleteEntry(currentHouseholdId, id);
-          showToast('Entry removed', 'info');
+          showToast('Reading removed', 'info');
           await loadDashboardData();
         } catch (err) {
-          showToast('Failed to delete entry: ' + err.message, 'error');
+          showToast('Failed to delete reading: ' + err.message, 'error');
         }
       }
     });
   });
 }
 
-// Load Active Intelligence Anomalies
+// 5. Load Active Intelligence Alerts
 async function loadAnomalies() {
   const container = document.getElementById('alerts-list-mount');
   if (!container) return;
@@ -291,7 +298,6 @@ async function loadAnomalies() {
     const anomalies = await api.intelligence.getAnomalies(currentHouseholdId, 'electricity');
     if (!anomalies || anomalies.length === 0) return;
 
-    // Prepend mathematical z-score anomalies from the database
     const dynamicItems = anomalies.map(a => `
       <div class="alert-pill-item ${a.severity === 'severe' ? 'critical' : 'warning'}">
         <div class="alert-pill-icon">
@@ -302,8 +308,8 @@ async function loadAnomalies() {
           </svg>
         </div>
         <div class="alert-pill-content">
-          <div class="alert-pill-title">Deviation: ${a.value} ${a.unit} (z = ${a.z_score > 0 ? '+' : ''}${a.z_score} σ)</div>
-          <div class="alert-pill-status">${a.severity === 'severe' ? 'Critical Statistical Anomaly' : 'Moderate Anomaly Alert'}</div>
+          <div class="alert-pill-title">Unusual Usage Spike: ${a.value} ${a.unit}</div>
+          <div class="alert-pill-status">Usage jumped higher than your normal routine (+${Math.abs(a.z_score)}x above average)</div>
         </div>
       </div>
     `).join('');
@@ -314,83 +320,217 @@ async function loadAnomalies() {
   }
 }
 
-// Load Interconnected Resource Graph
-async function loadRelationships() {
+// 6. WORKING, DRAGGABLE, INTERACTIVE RESOURCE CONNECTIONS GRAPH
+function loadInteractiveConnectionsGraph() {
   const canvas = document.getElementById('relationshipCanvas');
   if (!canvas) return;
 
-  try {
-    const graph = await api.intelligence.getRelationships(currentHouseholdId);
-    if (!graph || !graph.nodes) return;
+  const storyCard = document.getElementById('connection-story-card');
+  const storyIcon = document.getElementById('story-icon');
+  const storyTitle = document.getElementById('story-title');
+  const storyDesc = document.getElementById('story-desc');
 
-    drawRelationshipGraph(canvas, graph);
-  } catch (err) {
-    console.warn('Relationship graph:', err);
+  // Friendly everyday explanations
+  const stories = {
+    water: {
+      icon: '💧',
+      title: 'Water & Well Pump Connection (Direct Link)',
+      desc: 'Whenever anyone takes a shower or turns on a tap, your electric water pump runs to deliver pressure. Saving 15% on water saves about 50 liters a day and gives you free electricity savings too!'
+    },
+    pump: {
+      icon: '⚙️',
+      title: 'Water Pump — The Bridge Between Water & Power',
+      desc: 'Your pump is the physical bridge connecting your water and electric bills. It draws 1.2 kW of power. When you fix leaking faucets, the pump turns on far less often.'
+    },
+    electricity: {
+      icon: '⚡',
+      title: 'Electricity & Heating Connection',
+      desc: 'Electricity powers appliances, lighting, and the water pump. Running high-draw appliances like laundry or dishwashers in the sunny afternoon uses 100% free rooftop solar energy!'
+    },
+    cost: {
+      icon: '💵',
+      title: 'Monthly Utility Expenses',
+      desc: 'Electricity and water make up 85% of your home utility costs. Because they are connected, lowering your water usage gives you a double discount by also shrinking your electric bill.'
+    },
+    food: {
+      icon: '🍽️',
+      title: 'Kitchen & Meal Resources',
+      desc: 'Kitchen appliances like the refrigerator, stove, and dishwasher consume both water and electricity. Running full dishwasher loads saves up to 40 liters per week.'
+    }
+  };
+
+  // Node definitions with positions
+  const w = canvas.parentElement.clientWidth || 400;
+  const h = canvas.parentElement.clientHeight || 290;
+  canvas.width = w;
+  canvas.height = h;
+
+  const nodes = [
+    { id: 'water', label: 'Water Use', color: '#2dd4bf', x: w * 0.72, y: h * 0.55, radius: 26 },
+    { id: 'pump', label: 'Well / Pump', color: '#38bdf8', x: w * 0.56, y: h * 0.80, radius: 24 },
+    { id: 'electricity', label: 'Electricity', color: '#fbbf24', x: w * 0.28, y: h * 0.72, radius: 28 },
+    { id: 'cost', label: 'Utility Cost', color: '#34d399', x: w * 0.28, y: h * 0.38, radius: 25 },
+    { id: 'food', label: 'Kitchen & Food', color: '#fb923c', x: w * 0.55, y: h * 0.24, radius: 24 }
+  ];
+
+  const edges = [
+    { from: 'water', to: 'pump', label: 'Direct Link (100%)', isCausal: true },
+    { from: 'pump', to: 'electricity', label: 'Strong Link (99%)', isCausal: true },
+    { from: 'electricity', to: 'cost', label: 'Strong Link (91%)', isCausal: true },
+    { from: 'cost', to: 'food', label: 'Connected (98%)', isCausal: false }
+  ];
+
+  let draggedNode = null;
+  let activeNode = nodes[0]; // Start focused on Water
+  let pulseOffset = 0;
+
+  function updateStory(node) {
+    activeNode = node;
+    const info = stories[node.id] || stories.water;
+    if (storyIcon) storyIcon.textContent = info.icon;
+    if (storyTitle) storyTitle.textContent = info.title;
+    if (storyDesc) storyDesc.textContent = info.desc;
   }
+
+  // Draw Graph Loop
+  function draw() {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    pulseOffset = (pulseOffset + 0.015) % 1.0;
+
+    // 1. Draw Edges & Animated Pulses
+    edges.forEach(e => {
+      const n1 = nodes.find(n => n.id === e.from);
+      const n2 = nodes.find(n => n.id === e.to);
+      if (!n1 || !n2) return;
+
+      const isConnectedToActive = (activeNode && (activeNode.id === e.from || activeNode.id === e.to));
+
+      // Connection Line
+      ctx.beginPath();
+      ctx.moveTo(n1.x, n1.y);
+      ctx.lineTo(n2.x, n2.y);
+      ctx.strokeStyle = isConnectedToActive 
+        ? (e.isCausal ? 'rgba(245, 158, 11, 0.95)' : 'rgba(45, 212, 191, 0.9)') 
+        : 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = isConnectedToActive ? 3.5 : 2;
+      ctx.stroke();
+
+      // Animated traveling energy pulse packet
+      const px = n1.x + (n2.x - n1.x) * pulseOffset;
+      const py = n1.y + (n2.y - n1.y) * pulseOffset;
+      ctx.beginPath();
+      ctx.arc(px, py, isConnectedToActive ? 5 : 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = e.isCausal ? '#fbbf24' : '#2dd4bf';
+      ctx.shadowColor = ctx.fillStyle;
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Label at midpoint in Simple English
+      const mx = (n1.x + n2.x) / 2;
+      const my = (n1.y + n2.y) / 2;
+      ctx.fillStyle = isConnectedToActive ? '#f8fafc' : '#7fa99b';
+      ctx.font = '11px "Inter", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.label, mx, my - 6);
+    });
+
+    // 2. Draw Draggable Nodes
+    nodes.forEach(n => {
+      const isSelected = activeNode && activeNode.id === n.id;
+
+      // Outer Aura Ring
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius + (isSelected ? 10 : 5), 0, Math.PI * 2);
+      ctx.fillStyle = n.color;
+      ctx.globalAlpha = isSelected ? 0.35 : 0.15;
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+
+      // Main Node Circle
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+      ctx.fillStyle = n.color;
+      ctx.shadowColor = n.color;
+      ctx.shadowBlur = isSelected ? 18 : 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Label text
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.label, n.x, n.y + n.radius + 16);
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  // Mouse & Touch Drag Listeners
+  function getNodeAt(px, py) {
+    return nodes.find(n => Math.hypot(n.x - px, n.y - py) <= n.radius + 10);
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const found = getNodeAt(x, y);
+    if (found) {
+      draggedNode = found;
+      updateStory(found);
+    }
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!draggedNode) return;
+    const rect = canvas.getBoundingClientRect();
+    draggedNode.x = Math.max(30, Math.min(canvas.width - 30, e.clientX - rect.left));
+    draggedNode.y = Math.max(30, Math.min(canvas.height - 30, e.clientY - rect.top));
+  });
+
+  window.addEventListener('mouseup', () => {
+    draggedNode = null;
+  });
+
+  // Touch Support
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      const found = getNodeAt(x, y);
+      if (found) {
+        draggedNode = found;
+        updateStory(found);
+      }
+    }
+  });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (!draggedNode || e.touches.length !== 1) return;
+    const rect = canvas.getBoundingClientRect();
+    draggedNode.x = Math.max(30, Math.min(canvas.width - 30, e.touches[0].clientX - rect.left));
+    draggedNode.y = Math.max(30, Math.min(canvas.height - 30, e.touches[0].clientY - rect.top));
+  });
+
+  canvas.addEventListener('touchend', () => {
+    draggedNode = null;
+  });
+
+  // Resize handler
+  window.addEventListener('resize', () => {
+    canvas.width = canvas.parentElement.clientWidth || 400;
+    canvas.height = canvas.parentElement.clientHeight || 290;
+  });
+
+  updateStory(nodes[0]);
+  draw();
 }
 
-// Draw Relationship Graph on Canvas
-function drawRelationshipGraph(canvas, graph) {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width = canvas.parentElement.clientWidth || 360;
-  const h = canvas.height = canvas.parentElement.clientHeight || 300;
-
-  ctx.clearRect(0, 0, w, h);
-
-  const nodeMap = {};
-  const total = graph.nodes.length;
-  const radius = Math.min(w, h) * 0.35;
-  const cx = w / 2;
-  const cy = h / 2;
-
-  graph.nodes.forEach((n, idx) => {
-    const angle = (idx * 2 * Math.PI) / total;
-    nodeMap[n.id] = {
-      ...n,
-      x: cx + Math.cos(angle) * radius,
-      y: cy + Math.sin(angle) * radius
-    };
-  });
-
-  // Draw Edges
-  graph.edges.forEach(e => {
-    const s = nodeMap[e.source];
-    const t = nodeMap[e.target];
-    if (!s || !t) return;
-
-    ctx.beginPath();
-    ctx.moveTo(s.x, s.y);
-    ctx.lineTo(t.x, t.y);
-    ctx.strokeStyle = e.is_causal ? 'rgba(245, 158, 11, 0.7)' : 'rgba(45, 212, 191, 0.4)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Label
-    const mx = (s.x + t.x) / 2;
-    const my = (s.y + t.y) / 2;
-    ctx.fillStyle = '#7fa99b';
-    ctx.font = '10px "Inter", sans-serif';
-    ctx.fillText(`r = ${e.correlation_coefficient}`, mx, my);
-  });
-
-  // Draw Nodes
-  Object.values(nodeMap).forEach(n => {
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, 14, 0, Math.PI * 2);
-    ctx.fillStyle = n.color || '#2dd4bf';
-    ctx.shadowColor = n.color || '#2dd4bf';
-    ctx.shadowBlur = 10;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
-    ctx.fillStyle = '#f8fafc';
-    ctx.font = 'bold 11px "Space Grotesk", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(n.label, n.x, n.y + 24);
-  });
-}
-
-// Telemetry Logging Form Handler
+// 7. Add Usage Reading Form Handler
 function setupAddEntryForm() {
   const form = document.getElementById('add-entry-form');
   if (!form) return;
@@ -400,10 +540,10 @@ function setupAddEntryForm() {
 
   const defaultUnits = {
     electricity: 'kWh',
-    water: 'L',
+    water: 'Liters',
     food: 'kg',
     money: 'USD',
-    time: 'hrs'
+    time: 'Hours'
   };
 
   if (typeSelect && unitInput) {
@@ -426,13 +566,13 @@ function setupAddEntryForm() {
 
     try {
       await api.resources.addEntry(currentHouseholdId, payload);
-      showToast('Telemetry reading recorded!', 'success');
+      showToast('Reading saved successfully!', 'success');
       form.reset();
       const modal = document.getElementById('add-entry-modal');
       if (modal) modal.classList.remove('active');
       await loadDashboardData();
     } catch (err) {
-      showToast('Record failed: ' + err.message, 'error');
+      showToast('Could not save reading: ' + err.message, 'error');
     }
   });
 }

@@ -135,8 +135,8 @@ function renderSimulationResults(res) {
   const usageDeltaEl = document.getElementById('usage-delta-display');
   if (usageDeltaEl) {
     usageDeltaEl.innerHTML = `
-      <span>Baseline: <strong>${formatNumber(res.baseline_usage)}</strong> ${res.unit}</span>
-      <span>➔ Simulated: <strong>${formatNumber(res.simulated_usage)}</strong> ${res.unit}</span>
+      <span>Normal Use: <strong>${formatNumber(res.baseline_usage)}</strong> ${res.unit}</span>
+      <span>➔ With Changes: <strong>${formatNumber(res.simulated_usage)}</strong> ${res.unit}</span>
       <span style="color: ${res.usage_delta <= 0 ? 'var(--color-emerald-bright)' : '#EF4444'};">(${res.usage_delta > 0 ? '+' : ''}${formatNumber(res.usage_delta)} ${res.unit})</span>
     `;
   }
