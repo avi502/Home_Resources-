@@ -134,17 +134,25 @@ Copy the example configuration:
 cp .env.example .env
 ```
 
-### 3. Launch Application
+### 3. Launch Application (Choose any method)
 
-**On Windows:**
-Simply double-click `run.bat` or run:
-```powershell
-python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+**Method 1 — Via NPM (Recommended):**
+```bash
+npm install
+npm run dev   # or npm start
 ```
 
-**On Linux/macOS:**
+**Method 2 — Via Python launcher:**
 ```bash
-./run.sh
+python run.py
+```
+
+**Method 3 — On Windows (Single-Click):**
+Simply double-click `run.bat` in the project folder.
+
+**Method 4 — Direct Uvicorn:**
+```powershell
+python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Navigate to **[http://localhost:8000](http://localhost:8000)** in your browser!
