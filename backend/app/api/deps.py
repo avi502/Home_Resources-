@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.app.db.session import get_db
 from backend.app.core.security import decode_access_token
+from backend.app.core.config import settings
 from backend.app.repositories.user_repo import UserRepository
 from backend.app.models.user import User
 
@@ -15,21 +16,27 @@ def get_current_user(
     db: Session = Depends(get_db),
     cred: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)
 ) -> User:
-    if not cred or not cred.credentials:
+    is_demo_mode = settings.DEMO_MODE and settings.ENVIRONMENT != "test"
+    token = cred.credentials if cred else None
+
+    # Support instant local demo session or missing credentials in demo mode
+    if not token or token in ("demo-token", "null", "undefined", ""):
+        if is_demo_mode:
+            demo_user = db.query(User).filter(User.email == "demo@homeresource.local").first()
+            if demo_user:
+                return demo_user
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Authentication token required",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
-    # Support instant local demo-token session
-    if cred.credentials == "demo-token":
-        demo_user = db.query(User).filter(User.email == "demo@homeresource.local").first()
-        if demo_user:
-            return demo_user
 
-    payload = decode_access_token(cred.credentials)
+    payload = decode_access_token(token)
     if not payload or "sub" not in payload:
+        if is_demo_mode:
+            demo_user = db.query(User).filter(User.email == "demo@homeresource.local").first()
+            if demo_user:
+                return demo_user
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
@@ -39,6 +46,10 @@ def get_current_user(
     try:
         user_id = int(payload["sub"])
     except (ValueError, TypeError):
+        if is_demo_mode:
+            demo_user = db.query(User).filter(User.email == "demo@homeresource.local").first()
+            if demo_user:
+                return demo_user
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Malformed token subject",
@@ -46,6 +57,10 @@ def get_current_user(
 
     user = UserRepository(db).get_by_id(user_id)
     if not user:
+        if is_demo_mode:
+            demo_user = db.query(User).filter(User.email == "demo@homeresource.local").first()
+            if demo_user:
+                return demo_user
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found",

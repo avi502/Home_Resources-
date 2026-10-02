@@ -5,7 +5,10 @@ const USER_KEY = 'homeresource_user';
 const HOUSEHOLD_KEY = 'homeresource_household_id';
 
 export const storage = {
-  getToken: () => localStorage.getItem(TOKEN_KEY),
+  getToken: () => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    return (token && token !== 'undefined' && token !== 'null') ? token : null;
+  },
   setToken: (token) => localStorage.setItem(TOKEN_KEY, token),
   removeToken: () => localStorage.removeItem(TOKEN_KEY),
 
@@ -22,11 +25,15 @@ export const storage = {
 
   getHouseholdId: () => {
     const id = localStorage.getItem(HOUSEHOLD_KEY);
-    return id ? parseInt(id, 10) : 1; // Default to 1 (Demo household)
+    const parsed = parseInt(id, 10);
+    return (!isNaN(parsed) && parsed > 0) ? parsed : 1; // Default to 1 (Demo household)
   },
   setHouseholdId: (id) => localStorage.setItem(HOUSEHOLD_KEY, id.toString()),
 
-  isAuthenticated: () => !!localStorage.getItem(TOKEN_KEY),
+  isAuthenticated: () => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    return Boolean(token && token !== 'undefined' && token !== 'null');
+  },
 
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);

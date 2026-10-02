@@ -47,6 +47,7 @@ test.db
 *.swo
 .DS_Store
 Thumbs.db
+powershell.bat
 
 # Testing & Coverage
 .pytest_cache/
