@@ -17,8 +17,8 @@ if __name__ == "__main__":
     print("  HomeResource — Household Resource Intelligence Platform")
     print("=" * 60)
     print("\nApplication server ready at:")
-    print("  👉 http://localhost:8000")
-    print("  👉 http://127.0.0.1:8000")
+    print("  -> http://localhost:8000")
+    print("  -> http://127.0.0.1:8000")
     print("  (Note: Browsers cannot open 0.0.0.0 - use localhost or 127.0.0.1)")
     print("\nPress CTRL+C to stop.\n")
 
